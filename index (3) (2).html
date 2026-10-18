@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="uz" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EDUVERSE</title>
+<style>
+:root[data-theme=light]{--bg:#f4f8f8;--sf:#fff;--rs:#ebf3f3;--ink:#102428;--mu:#52696e;--ln:#d0dfe1;--tl:#0f766e;--ti:#fff;--vi:#6d52a0;--dg:#b91c1c;--ok:#15803d}
+:root[data-theme=dark]{--bg:#0b161a;--sf:#112025;--rs:#1a2e34;--ink:#e6f2f2;--mu:#9cb6bb;--ln:#2a4249;--tl:#5ecfc4;--ti:#061e21;--vi:#b7a4e8;--dg:#fca5a5;--ok:#86efac}
+*{box-sizing:border-box;transition:background-color .15s,border-color .15s,color .15s}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,"Segoe UI",Roboto,sans-serif}
+:focus-visible{outline:3px solid var(--vi);outline-offset:2px;border-radius:6px}
+header{background:var(--sf);border-bottom:1px solid var(--ln)}
+.bar{max-width:1000px;margin:auto;padding:10px 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.logo{font-weight:800;font-size:1.25rem;color:var(--tl);letter-spacing:-.02em}
+nav,.tools{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+nav button{background:none;border:0;color:var(--mu);font:inherit;font-weight:500;padding:8px 12px;border-radius:8px;cursor:pointer;min-height:40px}
+nav button[aria-current=page]{background:var(--rs);color:var(--ink)}
+main{max-width:1000px;margin:auto;padding:28px 16px 60px}
+h1{font-size:1.8rem;letter-spacing:-.02em;margin:0 0 6px}h2{font-size:1.2rem;margin:0 0 6px}
+.mu{color:var(--mu)}.sm{font-size:.88rem}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:18px;margin-top:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.narrow{max-width:440px;margin:auto}.wide{max-width:680px}
+label{display:block;font-size:.9rem;font-weight:500;margin:12px 0 4px}
+input,select,textarea{width:100%;min-height:44px;padding:8px 12px;border:1px solid var(--ln);border-radius:12px;background:var(--sf);color:var(--ink);font:inherit}
+.tools select{width:auto;min-height:38px;padding:2px 8px}
+.btn{min-height:44px;padding:8px 18px;border-radius:12px;border:1px solid var(--ln);background:var(--sf);color:var(--ink);font:inherit;font-weight:500;cursor:pointer}
+.btn.p{background:var(--tl);color:var(--ti);border-color:var(--tl)}.btn.p:hover{filter:brightness(1.1)}
+.btn.d{border-color:var(--dg);color:var(--dg)}.btn.s{min-height:34px;padding:2px 12px;font-size:.88rem}
+.btn:disabled{opacity:.5;cursor:not-allowed}.full{width:100%;margin-top:16px}
+.err{color:var(--dg);font-size:.92rem;margin:6px 0 0}.ok{color:var(--ok)}
+.banner{background:var(--rs);border-left:4px solid var(--vi);padding:8px 14px;font-size:.88rem;color:var(--mu);border-radius:0 8px 8px 0;margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;border:0;padding:0;margin:12px 0 0}
+.chip{min-height:36px;padding:4px 16px;border-radius:999px;border:1px solid var(--ln);background:var(--sf);color:var(--ink);font:inherit;font-size:.9rem;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--tl);color:var(--ti);border-color:var(--tl)}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:14px}.sp{justify-content:space-between}
+.track{height:10px;background:var(--rs);border-radius:99px;overflow:hidden}.fill{height:100%;background:var(--tl)}
+.opts{display:grid;gap:10px;margin:14px 0}
+.opt{min-height:48px;text-align:left;padding:8px 14px;border-radius:12px;border:2px solid var(--ln);background:var(--sf);color:var(--ink);font:inherit;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--tl)}.opt.good{border-color:var(--ok);background:var(--rs)}.opt.bad{border-color:var(--dg)}
+.tag{display:inline-block;font-size:.78rem;padding:1px 10px;border-radius:99px;background:var(--rs);color:var(--mu);margin-right:6px}
+.item{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;border-top:1px solid var(--ln);padding:12px 0}
+.item:first-child{border-top:0}
+.chat{max-height:380px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:4px}
+.msg{padding:10px 14px;border-radius:14px;max-width:85%;white-space:pre-wrap}
+.msg.u{align-self:flex-end;background:var(--tl);color:var(--ti)}.msg.b{background:var(--rs)}
+.danger{border-color:var(--dg)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+[hidden]{display:none!important}
+.shell{display:flex;min-height:100vh}
+aside{width:232px;flex:none;background:linear-gradient(180deg,#1b1740,#0d0b24);color:#e8e6ff;padding:18px 14px;display:flex;flex-direction:column;gap:14px;position:sticky;top:0;height:100vh}
+.brand{display:flex;gap:10px;align-items:center;padding-bottom:14px;border-bottom:1px solid #ffffff22}
+.brand .lg,.av{width:34px;height:34px;border-radius:10px;background:#b7a4e8;color:#1b1740;display:grid;place-items:center;font-weight:800;flex:none}
+.brand small{display:block;font-size:.72rem;color:#a9a5d4;line-height:1.2}
+aside nav{display:flex;flex-direction:column;gap:4px;flex:1}
+aside nav button{color:#cfcdf0;text-align:left;width:100%}
+aside nav button:hover{background:#ffffff12}
+aside nav button[aria-current=page]{background:#ffffff1f;color:#fff}
+#ucard{background:#ffffff14;border-radius:14px;padding:12px}
+#ucard .track{background:#ffffff26}#ucard .fill{background:#b7a4e8}
+.col{flex:1;min-width:0}
+.top{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 24px;border-bottom:1px solid var(--ln);background:var(--sf)}
+.top h1{margin:0;font-size:1.25rem}
+.pill{padding:3px 12px;border-radius:99px;font-size:.85rem;font-weight:600;border:1px solid}
+.pill.xp{background:#fdf0c8;color:#7a5600;border-color:#e8c766}.pill.fire{background:#ffe1d6;color:#9a3412;border-color:#f2a98a}
+body.noside aside{display:none}
+.mapw{overflow-x:auto;background:#ffffff0d;border-radius:12px}
+.map{background:linear-gradient(120deg,#1c1747,#123a3a);border-radius:18px;padding:16px;color:#e8e6ff;margin-top:6px}
+.map svg{display:block;width:100%;min-width:700px}.nd{cursor:pointer}.nd:focus-visible circle{stroke:#ffd166}
+.chip.dk{background:#1b1740;color:#e8e6ff;border-color:#1b1740}.chip.dk[aria-pressed=true]{background:#b7a4e8;color:#1b1740;border-color:#b7a4e8}
+.sub{border-radius:16px;padding:16px 18px;color:#fff;margin-top:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.sub .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:1.3rem;font-weight:700;color:#14112e}
+.sub .pc{margin-left:auto;text-align:right;min-width:140px;font-size:.85rem}.sub .track{background:#ffffff26;margin-top:4px}
+.lg3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+.lc{background:linear-gradient(160deg,#1f1a4a,#15123a);color:#e8e6ff;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.lc.lk{opacity:.55;filter:grayscale(.4)}.lc .btn.p{background:#5ecfc4;color:#061e21;border-color:#5ecfc4}
+.lc .tag{background:#ffffff22;color:#e8e6ff}
+.lc .ic{width:34px;height:34px;border-radius:10px;background:#ffffff1f;display:grid;place-items:center}
+@media(max-width:800px){.shell{flex-direction:column}aside{width:auto;height:auto;position:static;flex-direction:row;flex-wrap:wrap;align-items:center}aside nav{flex-direction:row;flex-wrap:wrap}aside nav button{width:auto}.brand{border:0;padding:0}#ucard{display:none}.top{padding:10px 14px}main{padding:16px 12px 50px}}
+
+.opt.sel{border-color:var(--tl);background:var(--rs);font-weight:600}
+.sub,.sub b{color:#fff}.sub .sm{color:#ffffffcc}
+aside nav button{display:flex;gap:10px;align-items:center}
+aside{height:100vh;height:100dvh}
+@media(max-width:800px){
+ aside{position:fixed;left:0;right:0;bottom:0;top:auto;height:auto;z-index:20;padding:6px 6px calc(6px + env(safe-area-inset-bottom));border-top:1px solid #ffffff22;flex-wrap:nowrap;gap:0}
+ .brand{display:none}
+ aside nav{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;gap:2px;scrollbar-width:none}
+ aside nav button{flex:1 0 auto;width:auto;min-width:66px;text-align:center;font-size:.68rem;padding:6px 6px;min-height:50px;flex-direction:column;justify-content:center;gap:2px;white-space:nowrap}
+ aside nav button span:first-child{font-size:1.15rem}
+ main{padding-bottom:100px}.sub .pc{margin-left:0;width:100%}#net{display:none}.top h1{font-size:1.1rem}
+ .tools{gap:6px}.tools select{max-width:110px}
+}
+@media(min-width:801px) and (max-width:1100px){aside{width:200px}main{padding:20px 16px 60px}}
+
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes grow{from{width:0}}@keyframes flt{50%{transform:translateY(-7px)}}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+@keyframes wave{0%,60%,100%{transform:rotate(0)}70%{transform:rotate(-30deg)}85%{transform:rotate(12deg)}}
+@keyframes talk{50%{transform:scaleY(2.8)}}@keyframes pls{50%{opacity:.35;transform:scale(1.5)}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}70%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+@keyframes shk{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes drift{to{transform:translate(3%,2%) scale(1.15)}}@keyframes fall{to{transform:translateY(105vh) rotate(var(--r))}}
+body::before{content:"";position:fixed;inset:-10%;z-index:-1;pointer-events:none;background:radial-gradient(circle at 15% 20%,#5ecfc430,transparent 40%),radial-gradient(circle at 85% 75%,#b7a4e830,transparent 42%);animation:drift 12s ease-in-out infinite alternate}
+.enter section>*{animation:up .55s both}.enter section>:nth-child(2){animation-delay:.07s}.enter section>:nth-child(3){animation-delay:.14s}.enter section>:nth-child(4){animation-delay:.21s}.enter section>:nth-child(n+5){animation-delay:.28s}
+.enter .lc{animation:up .5s .2s both}.enter .fill{animation:grow .9s ease-out}
+.card,.lc,.sub,.btn,.opt,.chip{transition:transform .2s,box-shadow .2s,background-color .15s,border-color .15s,color .15s}
+.card:hover,.lc:hover{transform:translateY(-3px);box-shadow:0 12px 26px #0f766e22}
+.btn:hover{transform:translateY(-1px)}.btn:active{transform:scale(.96)}.chip:hover{transform:scale(1.06)}
+.opt:hover:not(:disabled){transform:translateX(5px)}.opt.good{animation:pop .4s}.opt.bad{animation:shk .35s}
+.pill.fire{animation:pop .6s both}.brand .lg{transition:transform .5s}.brand:hover .lg{transform:rotate(360deg)}
+aside nav button{transition:transform .2s,background-color .15s}aside nav button:hover{transform:translateX(4px)}
+.map{background-size:200% 100%}.cf{position:fixed;top:-14px;width:9px;height:14px;z-index:99;border-radius:2px;animation:fall 1.9s ease-in forwards}
+#rbt{position:fixed;right:14px;bottom:14px;z-index:30;display:flex;flex-direction:column;align-items:flex-end;gap:6px;pointer-events:none}#rbt>*{pointer-events:auto}
+.bub{position:relative;max-width:270px;background:var(--sf);color:var(--ink);border:2px solid var(--tl);border-radius:16px 16px 4px 16px;padding:10px 14px;font-size:.92rem;box-shadow:0 10px 30px #0003;animation:pop .35s both}
+.bub .chips{margin-top:8px}.bub .chip{min-height:30px;font-size:.8rem;padding:2px 10px}
+.rbody{background:none;border:0;padding:0;cursor:pointer;animation:flt 3.2s ease-in-out infinite;filter:drop-shadow(0 8px 10px #0003)}
+.rb .eye{transform-box:fill-box;transform-origin:center;animation:blink 4s infinite;fill:#5ecfc4}
+.rb .mouth{transform-box:fill-box;transform-origin:center;fill:#5ecfc4}.rb.talk .mouth{animation:talk .28s infinite}
+.rb .ant{transform-box:fill-box;transform-origin:center;animation:pls 1.6s infinite;fill:#5ecfc4}
+.rb .arm{transform-box:fill-box;transform-origin:50% 8%;animation:wave 5s infinite}.rb.talk .arm{animation:wave .8s infinite}
+.rb .brow{opacity:0;stroke:#ff6b6b;stroke-width:4;stroke-linecap:round}.rb .chk{opacity:0}
+.rb[data-m=strict] .brow{opacity:1}.rb[data-m=strict] .eye,.rb[data-m=strict] .mouth,.rb[data-m=strict] .ant{fill:#ff6b6b}.rb[data-m=soft] .chk{opacity:.9}
+#wel{position:fixed;inset:0;z-index:100;background:#0d0b24d9;display:grid;place-items:center;padding:16px;backdrop-filter:blur(6px);overflow:auto}#wel .card{max-width:460px;width:100%;margin:0;animation:pop .5s both}
+@media(max-width:800px){#rbt{bottom:78px}}.bub{max-width:min(270px,calc(100vw - 28px))}@media(max-width:480px){.rbody svg{width:72px;height:84px}}
+@media(prefers-reduced-motion:reduce){*,body::before{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside id="side"><div class="brand"><span class="lg">E</span><div><b>EDUVERSE</b><small id="tag"></small></div></div><nav id="nav" aria-label="Main"></nav><div id="ucard"></div></aside>
+<div class="col"><div class="top"><h1 id="ptitle">EDUVERSE</h1><div class="tools">
+<span id="xp" class="pill xp" hidden></span><span id="st" class="pill fire" hidden></span><span id="net" class="sm mu" role="status"></span>
+<select id="lang" aria-label="Language"><option value="uz">O‘zbekcha</option><option value="ru">Русский</option><option value="en">English</option></select>
+<select id="theme" aria-label="Theme"></select><button class="btn s" id="out" hidden></button></div></div>
+<main id="app"></main></div></div>
+<div id="rbt" class="rb" data-m="friend"><div class="bub" id="bub" hidden><div id="bt"></div><div class="chips" id="bm" hidden></div><div style="text-align:right;margin-top:4px"><button class="btn s" id="vo" aria-label="Voice">🔇</button></div></div>
+<button class="rbody" id="rbody" aria-label="Mentor"><svg viewBox="0 0 120 140" width="92" height="108" aria-hidden="true"><line x1="60" y1="14" x2="60" y2="30" stroke="#b7a4e8" stroke-width="4"/><circle class="ant" cx="60" cy="10" r="7"/><rect x="22" y="30" width="76" height="60" rx="20" fill="#1b1740" stroke="#b7a4e8" stroke-width="4"/><rect x="32" y="40" width="56" height="38" rx="12" fill="#0d0b24"/><g id="eyes"><ellipse class="eye" cx="48" cy="58" rx="7" ry="9"/><ellipse class="eye" cx="72" cy="58" rx="7" ry="9"/></g><path class="brow" d="M39 44L55 49M81 44L65 49"/><circle class="chk" cx="38" cy="70" r="4" fill="#ff8fb1"/><circle class="chk" cx="82" cy="70" r="4" fill="#ff8fb1"/><rect class="mouth" x="52" y="68" width="16" height="4" rx="2"/><rect x="34" y="94" width="52" height="36" rx="14" fill="#b7a4e8"/><circle cx="60" cy="112" r="7" fill="#1b1740"/><circle cx="60" cy="112" r="3" fill="#5ecfc4"/><rect x="22" y="98" width="11" height="26" rx="5.5" fill="#b7a4e8"/><g class="arm"><rect x="87" y="98" width="11" height="26" rx="5.5" fill="#b7a4e8"/></g></svg></button></div>
+<div id="wel" hidden></div>
+<script>
+const TO=['alg','mech','code','chem','bio','eng'];
+const TN={alg:['Algebra','Алгебра','Algebra'],mech:['Mexanika','Механика','Mechanics'],code:['Dasturlash asoslari','Основы программирования','Programming basics'],chem:['Kimyo','Химия','Chemistry'],bio:['Biologiya','Биология','Biology'],eng:['Ingliz tili','Английский язык','English']};
+// Question bank (editable): correct option is always listed first; display order is shuffled.
+const QB=[
+['alg',1,'a',['2x + 6 = 14. x = ?','2x + 6 = 14. x = ?','2x + 6 = 14. x = ?'],[4,3,5,8],['2x = 8, demak x = 4.','2x = 8, значит x = 4.','2x = 8, so x = 4.']],
+['alg',1,'b',['3x = 21. x = ?','3x = 21. x = ?','3x = 21. x = ?'],[7,6,8,18],['x = 21 ÷ 3 = 7.','x = 21 ÷ 3 = 7.','x = 21 ÷ 3 = 7.']],
+['alg',2,'a',['(x + 3)(x − 3) = ?','(x + 3)(x − 3) = ?','(x + 3)(x − 3) = ?'],['x² − 9','x² + 9','x² − 6x + 9','x² − 6'],['Kvadratlar ayirmasi: x² − 3².','Разность квадратов: x² − 3².','Difference of squares: x² − 3².']],
+['alg',2,'b',['x² = 49. Musbat x = ?','x² = 49. Положительное x = ?','x² = 49. Positive x = ?'],[7,14,6,9],['7 · 7 = 49.','7 · 7 = 49.','7 · 7 = 49.']],
+['alg',3,'a',['x² − 5x + 6 = 0 ildizlari?','Корни x² − 5x + 6 = 0?','Roots of x² − 5x + 6 = 0?'],['2 va 3','1 va 6','−2 va −3','−1 va 6'],['(x − 2)(x − 3) = 0.','(x − 2)(x − 3) = 0.','(x − 2)(x − 3) = 0.']],
+['alg',3,'b',['x² − 7x + 10 = 0 ildizlari yig‘indisi?','Сумма корней x² − 7x + 10 = 0?','Sum of roots of x² − 7x + 10 = 0?'],[7,10,'−7',3],['Viyet teoremasi: yig‘indi = 7.','По теореме Виета: сумма = 7.','By Vieta: the sum is 7.']],
+['mech',1,'a',['2 soatda 120 km. Tezlik (km/soat)?','120 км за 2 ч. Скорость (км/ч)?','120 km in 2 h. Speed (km/h)?'],[60,240,120,30],['v = s / t = 120 / 2 = 60.','v = s / t = 120 / 2 = 60.','v = s / t = 120 / 2 = 60.']],
+['mech',1,'b',['15 m/s tezlikda 4 s. Masofa (m)?','15 м/с в течение 4 с. Путь (м)?','15 m/s for 4 s. Distance (m)?'],[60,19,11,3.75],['s = v · t = 15 · 4 = 60.','s = v · t = 15 · 4 = 60.','s = v · t = 15 · 4 = 60.']],
+['mech',2,'a',['F = 10 N, m = 2 kg. a (m/s²)?','F = 10 Н, m = 2 кг. a (м/с²)?','F = 10 N, m = 2 kg. a (m/s²)?'],[5,20,12,0.2],['a = F / m = 5.','a = F / m = 5.','a = F / m = 5.']],
+['mech',2,'b',['m = 5 kg, a = 3 m/s². F (N)?','m = 5 кг, a = 3 м/с². F (Н)?','m = 5 kg, a = 3 m/s². F (N)?'],[15,8,1.7,2],['F = m · a = 15.','F = m · a = 15.','F = m · a = 15.']],
+['mech',3,'a',['Tinch holatdan 2 s erkin tushish (g = 10). Masofa (m)?','Свободное падение 2 с из покоя (g = 10). Путь (м)?','Free fall from rest for 2 s (g = 10). Distance (m)?'],[20,10,40,5],['s = g·t² / 2 = 10·4 / 2 = 20.','s = g·t² / 2 = 10·4 / 2 = 20.','s = g·t² / 2 = 10·4 / 2 = 20.']],
+['mech',3,'b',['m = 4 kg, v = 3 m/s. Kinetik energiya (J)?','m = 4 кг, v = 3 м/с. Кинетическая энергия (Дж)?','m = 4 kg, v = 3 m/s. Kinetic energy (J)?'],[18,12,36,6],['E = m·v² / 2 = 4·9 / 2 = 18.','E = m·v² / 2 = 4·9 / 2 = 18.','E = m·v² / 2 = 4·9 / 2 = 18.']],
+['code',1,'a',['print(2 + 3 * 2) nimani chiqaradi?','Что выведет print(2 + 3 * 2)?','What does print(2 + 3 * 2) output?'],[8,10,7,12],['Avval ko‘paytirish: 3 · 2 = 6, keyin 2 + 6 = 8.','Сначала умножение: 3 · 2 = 6, затем 2 + 6 = 8.','Multiplication first: 3 · 2 = 6, then 2 + 6 = 8.']],
+['code',1,'b',['10 % 3 nimaga teng?','Чему равно 10 % 3?','What is 10 % 3?'],[1,3,0,3.3],['% — bo‘lishdan qoldiq: 10 = 3·3 + 1.','% — остаток от деления: 10 = 3·3 + 1.','% is the remainder: 10 = 3·3 + 1.']],
+['code',2,'a',['for i in range(4): print(i) necha marta chop etadi?','Сколько раз for i in range(4): print(i) выведет число?','How many times does for i in range(4): print(i) print?'],[4,3,5,0],['i = 0, 1, 2, 3 — jami 4 marta.','i = 0, 1, 2, 3 — всего 4 раза.','i = 0, 1, 2, 3 — 4 times.']],
+['code',2,'b',['len([5, 6, 7, 8, 9]) = ?','len([5, 6, 7, 8, 9]) = ?','len([5, 6, 7, 8, 9]) = ?'],[5,4,9,0],['len elementlar sonini beradi.','len возвращает число элементов.','len returns the number of elements.']],
+['code',3,'a',['x = 0; for i in range(1, 4): x += i. x = ?','x = 0; for i in range(1, 4): x += i. x = ?','x = 0; for i in range(1, 4): x += i. x = ?'],[6,10,3,4],['1 + 2 + 3 = 6.','1 + 2 + 3 = 6.','1 + 2 + 3 = 6.']],
+['code',3,'b',['Ikkilik 101 o‘nlikda necha?','Двоичное 101 в десятичной?','Binary 101 in decimal?'],[5,3,6,101],['4 + 0 + 1 = 5.','4 + 0 + 1 = 5.','4 + 0 + 1 = 5.']]];
+
+const S3=z=>z.split("|");
+QB.push(...[
+["chem",1,"a","Suvning formulasi qaysi?|Какова формула воды?|What is the formula of water?",["H₂O","CO₂","O₂","NaCl"],"Ikkita vodorod va bitta kislorod.|Два водорода и один кислород.|Two hydrogen and one oxygen."],
+["chem",1,"b","Osh tuzining formulasi?|Формула поваренной соли?|Formula of table salt?",["NaCl","KCl","HCl","NaOH"],"Natriy + xlor.|Натрий + хлор.|Sodium + chlorine."],
+["chem",2,"a","Kislorodning atom raqami?|Атомный номер кислорода?|Atomic number of oxygen?",[8,6,16,2],"Kislorod — 8-element.|Кислород — элемент №8.|Oxygen is element no. 8."],
+["chem",2,"b","2H₂ + O₂ → ?H₂O. Koeffitsient?|2H₂ + O₂ → ?H₂O. Коэффициент?|2H₂ + O₂ → ?H₂O. Coefficient?",[2,1,3,4],"2H₂ + O₂ → 2H₂O.|2H₂ + O₂ → 2H₂O.|2H₂ + O₂ → 2H₂O."],
+["chem",3,"a","CO₂ mol massasi (C=12, O=16)?|Молярная масса CO₂ (C=12, O=16)?|Molar mass of CO₂ (C=12, O=16)?",[44,28,32,56],"12 + 2·16 = 44.|12 + 2·16 = 44.|12 + 2·16 = 44."],
+["chem",3,"b","NaOH eritmasi pH?|pH раствора NaOH?|pH of NaOH solution?",["pH > 7","pH < 7","pH = 7","pH = 0"],"NaOH — ishqor.|NaOH — щёлочь.|NaOH is a base."],
+["bio",1,"a","Fotosintezda o‘simlik qaysi gazni yutadi?|Какой газ поглощают растения при фотосинтезе?|Which gas do plants absorb in photosynthesis?",["CO₂","O₂","N₂","H₂"],"O‘simlik CO₂ yutadi.|Растения поглощают CO₂.|Plants absorb CO₂."],
+["bio",1,"b","Odam yuragi nechta kameradan iborat?|Сколько камер в сердце человека?|How many chambers does a human heart have?",[4,2,3,6],"2 bo‘lmacha + 2 qorincha.|2 предсердия + 2 желудочка.|2 atria + 2 ventricles."],
+["bio",2,"a","Odamda xromosomalar soni?|Число хромосом у человека?|Human chromosome count?",[46,23,44,48],"23 juft = 46.|23 пары = 46.|23 pairs = 46."],
+["bio",2,"b","Odamda necha juft qovurg‘a bor?|Сколько пар рёбер у человека?|How many pairs of ribs do humans have?",[12,10,14,8],"Odatda 12 juft.|Обычно 12 пар.|Usually 12 pairs."],
+["bio",3,"a","Aa × Aa da aa genotipi ulushi?|Доля генотипа aa в Aa × Aa?|Share of aa in Aa × Aa?",["25%","50%","75%","0%"],"AA:Aa:aa = 1:2:1.|AA:Aa:aa = 1:2:1.|AA:Aa:aa = 1:2:1."],
+["bio",3,"b","6CO₂ + 6H₂O → C₆H₁₂O₆ + ?|6CO₂ + 6H₂O → C₆H₁₂O₆ + ?|6CO₂ + 6H₂O → C₆H₁₂O₆ + ?",["6O₂","6CO₂","3O₂","H₂"],"Kislorod ajraladi.|Выделяется кислород.|Oxygen is released."],
+["eng",1,"a","I ___ a student.|I ___ a student.|I ___ a student.",["am","is","are","be"],"I bilan am.|С I — am.|Use am with I."],
+["eng",1,"b","She ___ tea every day.|She ___ tea every day.|She ___ tea every day.",["drinks","drink","drinking","drunk"],"he/she/it + s.|he/she/it + s.|he/she/it takes -s."],
+["eng",2,"a","Past simple of go?|Past simple от go?|Past simple of go?",["went","goed","gone","going"],"go — went.|go — went.|go → went."],
+["eng",2,"b","There ___ two books on the table.|There ___ two books on the table.|There ___ two books on the table.",["are","is","am","be"],"Ko‘plik: are.|Мн. число: are.|Plural: are."],
+["eng",3,"a","If it rains, we ___ at home.|If it rains, we ___ at home.|If it rains, we ___ at home.",["will stay","stayed","would stayed","have stayed"],"if + present, will + verb.|if + present, will + verb.|if + present, will + verb."],
+["eng",3,"b","I have lived here ___ 2020.|I have lived here ___ 2020.|I have lived here ___ 2020.",["since","for","from","during"],"since + boshlanish payti.|since + момент начала.|since + starting point."]
+].map(([t,d,z,q,o,e])=>[t,d,z,S3(q),o,S3(e)]));
+const QS={};QB.forEach(([t,d,s,q,o,e])=>{const id=t+d+s;QS[id]={id,t,d,s,q,o,e}});
+// Lessons: [id, topic, level, minutes, title, body]
+const LES=[
+['alg1','alg',1,10,['Chiziqli tenglamalar','Линейные уравнения','Linear equations'],['Noma’lumni yakkalash uchun tenglikning ikkala tomoniga bir xil amal qo‘llanadi. Masalan, 2x + 6 = 14 → 2x = 8 → x = 4.','Чтобы найти неизвестное, выполняйте одно и то же действие с обеими частями равенства. Например, 2x + 6 = 14 → 2x = 8 → x = 4.','To isolate the unknown, do the same operation to both sides. Example: 2x + 6 = 14 → 2x = 8 → x = 4.']],
+['alg2','alg',2,12,['Qisqa ko‘paytirish','Формулы сокращённого умножения','Special products'],['(a + b)(a − b) = a² − b², (a + b)² = a² + 2ab + b². Bular hisoblashni tezlashtiradi.','(a + b)(a − b) = a² − b², (a + b)² = a² + 2ab + b². Они ускоряют вычисления.','(a + b)(a − b) = a² − b² and (a + b)² = a² + 2ab + b². They speed up calculations.']],
+['alg3','alg',3,15,['Kvadrat tenglamalar','Квадратные уравнения','Quadratic equations'],['ax² + bx + c = 0 ko‘paytuvchilarga ajratish yoki Viyet teoremasi bilan yechiladi: x₁ + x₂ = −b/a, x₁ · x₂ = c/a.','ax² + bx + c = 0 решается разложением на множители или по теореме Виета: x₁ + x₂ = −b/a, x₁ · x₂ = c/a.','ax² + bx + c = 0 is solved by factoring or Vieta’s formulas: x₁ + x₂ = −b/a, x₁ · x₂ = c/a.']],
+['mech1','mech',1,10,['Tezlik va masofa','Скорость и путь','Speed and distance'],['v = s / t va s = v · t. Birliklarga e’tibor bering: km/soat va m/s.','v = s / t и s = v · t. Следите за единицами: км/ч и м/с.','v = s / t and s = v · t. Watch your units: km/h versus m/s.']],
+['mech2','mech',2,12,['Nyutonning ikkinchi qonuni','Второй закон Ньютона','Newton’s second law'],['F = m · a. Kuch qancha katta bo‘lsa, tezlanish shuncha katta; massa katta bo‘lsa, tezlanish kichik.','F = m · a. Чем больше сила, тем больше ускорение; чем больше масса, тем меньше ускорение.','F = m · a. A bigger force gives more acceleration; a bigger mass gives less.']],
+['mech3','mech',3,15,['Erkin tushish va energiya','Свободное падение и энергия','Free fall and energy'],['s = g·t² / 2 (g ≈ 10 m/s²), kinetik energiya E = m·v² / 2.','s = g·t² / 2 (g ≈ 10 м/с²), кинетическая энергия E = m·v² / 2.','s = g·t² / 2 (g ≈ 10 m/s²) and kinetic energy E = m·v² / 2.']],
+['code1','code',1,10,['Ifodalar va amallar','Выражения и операции','Expressions and operators'],['Ko‘paytirish qo‘shishdan oldin bajariladi. % — bo‘lishdan qoldiq: 10 % 3 = 1.','Умножение выполняется раньше сложения. % — остаток от деления: 10 % 3 = 1.','Multiplication runs before addition. % is the remainder: 10 % 3 = 1.']],
+['code2','code',2,12,['Sikllar va ro‘yxatlar','Циклы и списки','Loops and lists'],['for i in range(n) sikli i = 0 dan n − 1 gacha n marta bajariladi. len(ro‘yxat) — elementlar soni.','Цикл for i in range(n) выполняется n раз: i от 0 до n − 1. len(список) — число элементов.','for i in range(n) runs n times, with i from 0 to n − 1. len(list) is the number of elements.']],
+['code3','code',3,15,['Ikkilik sanoq tizimi','Двоичная система','Binary numbers'],['Har bir razryad 2 ning darajasi: 101₂ = 4 + 0 + 1 = 5.','Каждый разряд — степень двойки: 101₂ = 4 + 0 + 1 = 5.','Each digit is a power of 2: 101₂ = 4 + 0 + 1 = 5.']]
+].map(([id,t,d,min,ti,b])=>({id,t,d,min,ti,b}));
+
+LES.push(...[
+["chem1","chem",1,10,"Elementlar va formulalar|Элементы и формулы|Elements and formulas","Formula tarkibni ko‘rsatadi: suv — H₂O, osh tuzi — NaCl. Kislorodning atom raqami 8.|Формула показывает состав: вода — H₂O, соль — NaCl. Атомный номер кислорода — 8.|A formula shows composition: water is H₂O, table salt is NaCl. Oxygen's atomic number is 8."],
+["chem2","chem",2,12,"Reaksiya tenglamalari|Уравнения реакций|Reaction equations","Reaksiyada atomlar soni saqlanadi: 2H₂ + O₂ → 2H₂O. Koeffitsientlar bilan tenglashtiring.|В реакции число атомов сохраняется: 2H₂ + O₂ → 2H₂O. Уравнивайте коэффициентами.|Atoms are conserved: 2H₂ + O₂ → 2H₂O. Balance with coefficients."],
+["chem3","chem",3,15,"Mol va pH|Моль и pH|Moles and pH","Mol massa — atom massalari yig‘indisi: CO₂ = 12 + 2·16 = 44. pH < 7 kislota, pH > 7 ishqor.|Молярная масса — сумма атомных: CO₂ = 12 + 2·16 = 44. pH < 7 — кислота, pH > 7 — щёлочь.|Molar mass is the sum of atomic masses: CO₂ = 44. pH < 7 acid, pH > 7 base."],
+["bio1","bio",1,10,"Hayot asoslari|Основы жизни|Basics of life","O‘simliklar fotosintezda CO₂ yutadi. Odam yuragi 4 kamerali: 2 bo‘lmacha, 2 qorincha.|Растения поглощают CO₂. Сердце человека четырёхкамерное: 2 предсердия, 2 желудочка.|Plants absorb CO₂. The human heart has 4 chambers."],
+["bio2","bio",2,12,"Odam tanasi|Тело человека|The human body","Odamda 46 ta xromosoma (23 juft) va odatda 12 juft qovurg‘a bor.|У человека 46 хромосом (23 пары) и обычно 12 пар рёбер.|Humans have 46 chromosomes (23 pairs) and usually 12 pairs of ribs."],
+["bio3","bio",3,15,"Genetika va fotosintez|Генетика и фотосинтез|Genetics and photosynthesis","Aa × Aa → AA:Aa:aa = 1:2:1. Fotosintez: 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂.|Aa × Aa → AA:Aa:aa = 1:2:1. Фотосинтез: 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂.|Aa × Aa → 1:2:1. Photosynthesis: 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂."],
+["eng1","eng",1,10,"To be va Present Simple|To be и Present Simple|To be and Present Simple","I am, he/she/it is, we/you/they are. Present Simple da he/she/it fe’liga -s qo‘shiladi.|I am, he/she/it is, we/you/they are. В Present Simple к he/she/it добавляется -s.|I am, he/she/it is, we/you/they are. In Present Simple add -s for he/she/it."],
+["eng2","eng",2,12,"Past Simple va there is/are|Past Simple и there is/are|Past Simple and there is/are","go → went (noto‘g‘ri fe’l). Birlik: there is, ko‘plik: there are.|go → went (неправильный глагол). Ед.: there is, мн.: there are.|go → went (irregular). Singular: there is, plural: there are."],
+["eng3","eng",3,15,"Shart gaplar va Present Perfect|Условные и Present Perfect|Conditionals and Present Perfect","If + present, will + fe’l. Present Perfect: since + payt, for + davr.|If + present, will + глагол. Present Perfect: since + момент, for + период.|If + present, will + verb. Present Perfect: since + point, for + duration."]
+].map(([id,t,d,min,ti,b])=>({id,t,d,min,ti:S3(ti),b:S3(b)})));
+const LS={};LES.forEach(l=>LS[l.id]=l);
+const CAR={
+swe:{n:['Dasturiy ta’minot muhandisi','Инженер-программист','Software engineer'],req:{code:70,alg:40}},
+data:{n:['Ma’lumotlar tahlilchisi','Аналитик данных','Data analyst'],req:{alg:60,code:50}},
+meche:{n:['Mexanika muhandisi','Инженер-механик','Mechanical engineer'],req:{mech:70,alg:50}},
+phys:{n:['Fizik-tadqiqotchi','Физик-исследователь','Physics researcher'],req:{mech:60,alg:60}},
+teach:{n:['Matematika o‘qituvchisi','Учитель математики','Math teacher'],req:{alg:70}},doc:{n:['Shifokor','Врач','Doctor'],req:{bio:70,chem:60}},trans:{n:['Tarjimon','Переводчик','Translator'],req:{eng:70}}};
+const GOALS={exams:['Imtihonlarga tayyorlanish','Подготовка к экзаменам','Prepare for exams'],grades:['Baholarni yaxshilash','Улучшить оценки','Improve grades'],skills:['Yangi ko‘nikmalar','Новые навыки','Learn new skills'],career:['Kasb tanlash','Выбор профессии','Choose a career']};
+const TIMES={morning:['Ertalab','Утро','Morning'],afternoon:['Tushdan keyin','День','Afternoon'],evening:['Kechqurun','Вечер','Evening']};
+const STYLES={examples:['Misollar bilan','С примерами','With examples'],stepwise:['Bosqichma-bosqich','Пошагово','Step by step'],concise:['Qisqa va aniq','Кратко','Short and direct'],visual:['Ko‘rgazmali','Наглядно','Visual']};
+// ---------- core ----------
+const L=['uz','ru','en'],KEY='eduverse.v2',$=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let DB=null;try{DB=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+DB=DB||{users:{},sess:null,lang:'uz',theme:'light'};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}};
+const li=()=>Math.max(0,L.indexOf(DB.lang)),x=(a,b,c)=>[a,b,c][li()];
+const U=()=>DB.users[DB.sess],TNm=t=>TN[t][li()];
+let V={n:'lessons',a:null},ui={},OFF=[];
+const M=(u,t)=>u.m[t]===undefined?40:u.m[t];
+const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
+const shuf=()=>[0,1,2,3].sort(()=>Math.random()-.5);
+const newUser=(name,salt,hash)=>({name,salt,hash,lang:DB.lang,theme:DB.theme,stage:'quiz',
+ prof:{level:'school',subjects:[],goals:[],times:[],minutes:30,style:'examples',chal:'balanced',careers:[]},
+ m:{},miss:{},done:{},plan:[],assess:{asked:[],cur:null},hist:[],portfolio:[],queue:[]});
+async function hashPw(p,salt){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(salt+p));return [...new Uint8Array(b)].map(v=>v.toString(16).padStart(2,'0')).join('')}catch(e){let h=5381;for(const c of salt+p)h=((h*33)^c.charCodeAt(0))>>>0;return'f'+h}}
+// ---------- offline library (IndexedDB) ----------
+const idb=()=>new Promise((ok,no)=>{try{const r=indexedDB.open('eduverse',1);r.onupgradeneeded=()=>r.result.createObjectStore('l',{keyPath:'k'});r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)}catch(e){no(e)}});
+const idbDo=(mode,fn)=>idb().then(d=>new Promise((ok,no)=>{const t=d.transaction('l',mode),r=fn(t.objectStore('l'));t.oncomplete=()=>ok(r&&r.result);t.onerror=()=>no(t.error)}));
+async function loadOff(){try{OFF=(await idbDo('readonly',s=>s.getAll())||[]).filter(o=>o.k.startsWith(DB.sess+'|'))}catch(e){OFF=[]}}
+const isOff=id=>OFF.some(o=>o.k===DB.sess+'|'+id);
+// ---------- learning engine ----------
+const TP=u=>u.prof.subjects.length?u.prof.subjects:TO;
+const dFor=m=>m<35?1:m<65?2:3;
+function nextQ(u){const a=u.assess,tp=TP(u);if(a.asked.length>=tp.length*2)return null;
+ const cnt=t=>a.asked.filter(q=>QS[q.id].t===t).length,t=[...tp].sort((p,q)=>cnt(p)-cnt(q))[0],d=dFor(M(u,t)),used=new Set(a.asked.map(q=>q.id));
+ return Object.values(QS).filter(q=>q.t===t&&q.s==='a'&&!used.has(q.id)).sort((p,q)=>Math.abs(p.d-d)-Math.abs(q.d-d))[0]||null}
+function grade(u,q,ok,delta){const m=M(u,q.t);u.m[q.t]=clamp(ok?m+delta[0]+5*q.d:m-delta[1],0,100);if(!ok)u.miss[q.t]=(u.miss[q.t]||0)+1}
+function buildPlan(u){const cT=new Set(u.prof.careers.flatMap(c=>Object.keys(CAR[c].req))),
+ sc=t=>(100-M(u,t))+(u.prof.subjects.includes(t)?10:0)+(cT.has(t)?10:0)+(u.miss[t]||0)*5,
+ sh=u.prof.chal==='ambitious'?1:u.prof.chal==='gentle'?-1:0,ids=[];
+ [...TP(u)].sort((a,b)=>sc(b)-sc(a)).forEach(t=>{const d0=clamp(dFor(M(u,t))+sh,1,3);LES.filter(l=>l.t===t&&l.d>=d0&&!u.done[l.id]).forEach(l=>ids.push(l.id))});u.plan=ids;u.ps=TP(u).join()}
+function why(u,l){const m=M(u,l.t),r=[x(`${TNm(l.t)} bo‘yicha o‘zlashtirish: ${m}%`,`Освоение темы «${TNm(l.t)}»: ${m}%`,`Your ${TNm(l.t)} mastery is ${m}%`)];
+ if(u.prof.subjects.includes(l.t))r.push(x('bu sizning qiziqishingiz','это ваш интерес','it matches your interests'));
+ if(u.miss[l.t]>1)r.push(x(`${u.miss[l.t]} ta xato takrorlangan`,`повторяющиеся ошибки: ${u.miss[l.t]}`,`${u.miss[l.t]} mistakes to review`));
+ if(u.prof.careers.some(c=>CAR[c].req[l.t]))r.push(x('tanlangan kasbingiz uchun kerak','нужно для выбранной профессии','needed for your chosen career'));
+ return r.join('; ')+'.'}
+function days(u){const out=[];let cur=[],sum=0;u.plan.forEach(id=>{const l=LS[id];if(cur.length&&sum+l.min>u.prof.minutes){out.push(cur);cur=[];sum=0}cur.push(l);sum+=l.min});if(cur.length)out.push(cur);return out}
+const XPV=[30,40,60];
+function awardXP(u,l,p){const g=p>=.5?(u.done[l.id]?10:XPV[l.d-1]):Math.round(5*p);u.xp=(u.xp||0)+g;ui.gain=g;
+ const td=new Date().toDateString(),yd=new Date(Date.now()-864e5).toDateString();if(u.last!==td){u.streak=u.last===yd?(u.streak||0)+1:1;u.last=td}}
+function finishPractice(u,l,ok,n){awardXP(u,l,ok/n);if(ok/n>=.5)bump('lesson');const p=ok/n,m0=M(u,l.t);u.m[l.t]=clamp(m0+(p>=.5?10*p:-10*(1-p)),0,100);
+ u.hist.push({l:l.id,p,at:Date.now()});u.queue.push({l:l.id,p,at:Date.now(),synced:false});
+ if(p>=.5){u.done[l.id]=1;u.plan=u.plan.filter(i=>i!==l.id);if(u.m[l.t]>=65)u.plan=u.plan.filter(i=>!(LS[i].t===l.t&&LS[i].d<l.d))}
+ else{const prev=LES.find(k=>k.t===l.t&&k.d===l.d-1&&!u.done[k.id]);if(prev&&!u.plan.includes(prev.id))u.plan.unshift(prev.id);if(!u.plan.includes(l.id))u.plan.unshift(l.id)}
+ save()}
+const revision=u=>TO.filter(t=>(u.miss[t]||0)>=2||(u.m[t]!==undefined&&u.m[t]<40));
+const match=(u,c)=>Math.round(Object.entries(CAR[c].req).reduce((s,[t,r])=>s+Math.min(1,M(u,t)/r),0)/Object.keys(CAR[c].req).length*100);
+// ---------- demo mentor (rule-based, NOT generative AI) ----------
+function mentor(u,q){q=q.toLowerCase();const cut=s=>u.prof.style==='concise'?s.split(/(?<=\.)\s/)[0]:s,nl=u.plan.map(i=>LS[i]);
+ const R={alg:/algebra|tenglama|уравн|equation|kvadrat|квадрат|quadrat|viyet|виет|vieta/,mech:/mexanika|mechanic|механик|tezlik|speed|скорост|force|kuch|сил|nyuton|newton|ньютон|energ|энерг|erkin|fall|паден/,code:/dastur|program|программ|loop|sikl|цикл|binary|ikkilik|двоич|python|code|kod\b|код/};
+ const tp=Object.keys(R).find(t=>R[t].test(q));
+ if(tp){const l=LES.filter(k=>k.t===tp).sort((a,b)=>(u.done[a.id]?1:0)-(u.done[b.id]?1:0)||a.d-b.d)[0];return `${l.ti[li()]}: ${cut(l.b[li()])}`}
+ if(/hi\b|hello|salom|привет|здравств/.test(q))return x(`Salom, ${u.name}! Men demo mentorman. “reja”, “keyingi dars”, “zaif joylarim”, “karyera” yoki mavzu nomini yozing.`,`Здравствуйте, ${u.name}! Я демо-ментор. Напишите «план», «следующий урок», «слабые места», «карьера» или название темы.`,`Hi ${u.name}! I’m the demo mentor. Try “plan”, “next lesson”, “weak spots”, “careers”, or a topic name.`);
+ if(/keyingi|next|дальше|след/.test(q))return nl[0]?x(`Keyingi dars: ${nl[0].ti[0]}. Sababi: ${why(u,nl[0])}`,`Следующий урок: ${nl[0].ti[1]}. Почему: ${why(u,nl[0])}`,`Next lesson: ${nl[0].ti[2]}. Why: ${why(u,nl[0])}`):x('Reja bo‘sh — “Reja” bo‘limida qayta tuzing.','План пуст — пересоберите его в разделе «План».','Your plan is empty — rebuild it in the Plan tab.');
+ if(/reja|plan|план/.test(q))return nl.length?nl.slice(0,4).map((l,i)=>`${i+1}. ${l.ti[li()]} (${l.min} ${x('daq','мин','min')})`).join('\n'):x('Hozircha reja yo‘q.','Плана пока нет.','No plan yet.');
+ if(/zaif|xato|weak|mistake|слаб|ошиб|qiyin/.test(q)){const r=revision(u);return r.length?x('Takrorlash kerak: ','Нужно повторить: ','Revise: ')+r.map(TNm).join(', '):x('Ajoyib, jiddiy zaif joy yo‘q.','Отлично, серьёзных слабых мест нет.','Nice — no serious weak spots right now.')}
+ if(/karyera|kasb|career|профес|карьер/.test(q)){const b=Object.keys(CAR).sort((a,c)=>match(u,c)-match(u,a))[0];return x(`Eng mos kasb: ${CAR[b].n[0]} (${match(u,b)}%).`,`Лучше всего подходит: ${CAR[b].n[1]} (${match(u,b)}%).`,`Best match: ${CAR[b].n[2]} (${match(u,b)}%).`)}
+ if(/vaqt|time|врем|минут|daqiqa/.test(q))return x(`Kuniga ${u.prof.minutes} daqiqa: reja shunga moslangan.`,`${u.prof.minutes} минут в день: план рассчитан под это время.`,`${u.prof.minutes} minutes a day: your plan is sized to that.`);
+ return x('Tushunmadim. “reja”, “keyingi dars”, “zaif joylarim”, “karyera” yoki mavzu nomini yozing.','Не понял. Напишите «план», «следующий урок», «слабые места», «карьера» или название темы.','I didn’t get that. Try “plan”, “next lesson”, “weak spots”, “careers”, or a topic name.')}
+// ---------- views ----------
+const bar=p=>`<div class="track" role="progressbar" aria-valuenow="${Math.round(p)}" aria-valuemin="0" aria-valuemax="100"><div class="fill" style="width:${clamp(p,0,100)}%"></div></div>`;
+const go=(n,a=null)=>{V={n,a};ui={};ENT=1;render();window.scrollTo(0,0)};
+const fld=(id,l,type,v,err,ex='')=>`<label for="${id}">${l}</label><input id="${id}" type="${type}" value="${esc(v??'')}" ${ex} aria-invalid="${!!err}">${err?`<p class="err" role="alert">${err}</p>`:''}`;
+const chips=(g,map,cur)=>Object.keys(map).map(k=>`<button type="button" class="chip" data-a="chip" data-g="${g}" data-v="${k}" aria-pressed="${cur.includes(k)}">${map[k][li()]}</button>`).join('');
+const sel=(id,opts,cur)=>`<select id="${id}">${opts.map(([v,l])=>`<option value="${v}" ${v===cur?'selected':''}>${l}</option>`).join('')}</select>`;
+function qHTML(q,order,fb){const ok=fb&&order[fb.pick]===0;
+ return `<p style="font-weight:600;font-size:1.1rem">${esc(q.q[li()])}</p><div class="opts">`+order.map((oi,i)=>{let c='opt';if(fb){if(oi===0)c+=' good';else if(i===fb.pick)c+=' bad'}
+ return `<button class="${c}" data-a="ans" data-i="${i}" ${fb?'disabled':''}>${esc(q.o[oi])}</button>`}).join('')+'</div>'+
+ (fb?`<p role="status" class="${ok?'ok':'err'}"><b>${ok?x('To‘g‘ri!','Верно!','Correct!'):x('Noto‘g‘ri.','Неверно.','Not quite.')}</b> ${esc(q.e[li()])}</p>`:'')}
+function vAuth(reg){const e=ui.e||{},f=ui.f||{};return `<section class="narrow"><h1>${reg?x('Hisob yarating','Создайте аккаунт','Create your account'):x('Qaytganingiz bilan','С возвращением','Welcome back')}</h1>
+<p class="mu">${reg?x('Bir daqiqa vaqt oladi. To‘lov talab qilinmaydi.','Это займёт минуту. Оплата не требуется.','It takes a minute. No payment needed.'):x('O‘quv rejangizni davom ettirish uchun kiring.','Войдите, чтобы продолжить обучение.','Log in to continue your learning plan.')}</p>
+<form class="card" id="f-auth" novalidate>${e.top?`<p class="err" role="alert">${e.top}</p>`:''}
+${reg?fld('name',x('To‘liq ism','Полное имя','Full name'),'text',f.name,e.name,'autocomplete="name"'):''}
+${fld('email',x('Elektron pochta','Электронная почта','Email'),'email',f.email,e.email,'autocomplete="email"')}
+${fld('pw',x('Parol','Пароль','Password'),'password','',e.pw,'autocomplete="'+(reg?'new':'current')+'-password"')}
+${reg?`<p class="mu sm">${x('Kamida 8 ta belgi.','Не менее 8 символов.','At least 8 characters.')}</p>`:''}
+<button class="btn p full">${reg?x('Hisob yaratish','Создать аккаунт','Create account'):x('Kirish','Войти','Log in')}</button></form>
+<p class="mu sm">${reg?x('Hisobingiz bormi?','Уже есть аккаунт?','Already have an account?'):x('Hisobingiz yo‘qmi?','Ещё нет аккаунта?','No account yet?')} <a href="#" data-a="go" data-v="${reg?'login':'register'}" style="color:var(--tl);font-weight:500">${reg?x('Kirish','Войти','Log in'):x('Ro‘yxatdan o‘tish','Регистрация','Sign up')}</a></p></section>`}
+function vPrefs(u,onboard){const p=u.prof,e=ui.e||{};return `<section class="wide"><h1>${onboard?x('Sizni tanib olaylik','Давайте познакомимся','Let’s get to know you'):x('Profil va afzalliklar','Профиль и предпочтения','Profile and preferences')}</h1>
+<p class="mu">${onboard?x('1/2 qadam: afzalliklar. Keyin qisqa moslashuvchan baholash.','Шаг 1 из 2: предпочтения. Затем короткая адаптивная оценка.','Step 1 of 2: preferences. Then a short adaptive assessment.'):x('Afzalliklarni istalgan vaqt o‘zgartirishingiz mumkin.','Предпочтения можно менять в любое время.','You can change your preferences any time.')}</p>
+<form class="card" id="f-prefs" novalidate>${fld('pname',x('To‘liq ism','Полное имя','Full name'),'text',u.name,e.name)}
+<label for="level">${x('Ta’lim darajasi','Уровень образования','Education level')}</label>${sel('level',[['school',x('Maktab o‘quvchisi','Школьник','School student')],['university',x('Universitet talabasi','Студент университета','University student')]],p.level)}
+<fieldset class="chips"><legend class="sm" style="font-weight:500;margin-bottom:8px">${x('Fanlar (baholash va reja shu bo‘yicha)','Предметы (оценка и план по ним)','Subjects (assessment and plan use these)')}</legend>${chips('subjects',Object.fromEntries(TO.map(t=>[t,TN[t]])),p.subjects)}</fieldset>
+<fieldset class="chips"><legend class="sm" style="font-weight:500;margin-bottom:8px">${x('Maqsadlar','Цели','Goals')}</legend>${chips('goals',GOALS,p.goals)}</fieldset>
+<fieldset class="chips"><legend class="sm" style="font-weight:500;margin-bottom:8px">${x('Qulay o‘qish vaqti','Удобное время занятий','Study times')}</legend>${chips('times',TIMES,p.times)}</fieldset>
+${fld('minutes',x('Kunlik o‘qish vaqti (daqiqa)','Время занятий в день (минуты)','Study time per day (minutes)'),'number',p.minutes,e.minutes,'min="10" max="240" step="5"')}
+<label for="style">${x('Tushuntirish uslubi','Стиль объяснений','Explanation style')}</label>${sel('style',Object.keys(STYLES).map(k=>[k,STYLES[k][li()]]),p.style)}
+<label for="chal">${x('Qulay murakkablik','Желаемая сложность','Preferred challenge')}</label>${sel('chal',[['gentle',x('Yengil','Лёгкая','Gentle')],['balanced',x('O‘rtacha','Средняя','Balanced')],['ambitious',x('Qiyin','Высокая','Ambitious')]],p.chal)}
+<div class="row"><button class="btn p">${onboard?x('Baholashni boshlash','Начать оценку','Start assessment'):x('Saqlash','Сохранить','Save')}</button><span role="status" class="ok">${ui.saved?x('Saqlandi','Сохранено','Saved'):''}</span>${onboard?`<button type="button" class="btn" data-a="skip">${x('Hozircha o‘tkazib yuborish','Пропустить пока','Skip for now')}</button>`:''}</div></form>
+${onboard?'':`<div class="card"><h2>${x('Qiziqish testini qayta topshirish','Пройти тест интересов заново','Retake the interests test')}</h2><button class="btn p" data-a="requiz">${x('Testni boshlash','Начать тест','Start test')}</button></div>
+<div class="card"><h2>${x('Baholashni qayta topshirish','Пройти оценку заново','Retake assessment')}</h2><p class="mu">${x('Natijalar yangilanadi va reja qayta tuziladi.','Результаты обновятся, план будет пересобран.','Results are refreshed and your plan is rebuilt.')}</p><button class="btn" data-a="retake">${x('Qayta boshlash','Начать заново','Start again')}</button></div>
+<div class="card danger"><h2>${x('Ma‘lumotlarni tozalash','Очистка данных','Reset data')}</h2><p class="mu">${x('Hisobingiz va o‘quv ma’lumotlaringiz butunlay o‘chiriladi.','Аккаунт и данные обучения будут удалены безвозвратно.','Your account and learning data are permanently removed.')}</p>
+<label for="dc">${x('Tasdiqlash uchun DELETE deb yozing','Введите DELETE для подтверждения','Type DELETE to confirm')}</label><input id="dc"><button class="btn d full" id="del" data-a="del" disabled>${x('Hammasini tozalash','Очистить всё','Erase everything')}</button></div>`}</section>`}
+function vAssess(u){const a=u.assess;if(!a.cur){const q=nextQ(u);if(!q){u.stage='summary';save();return vSummary(u)}a.cur={id:q.id,order:shuf()};save()}
+ const tot=TP(u).length*2;return `<section class="wide"><h1>${x('Moslashuvchan baholash','Адаптивная оценка','Adaptive assessment')}</h1>
+<p class="mu">${x('2/2 qadam. Savollar javoblaringizga qarab qiyinlashadi yoki yengillashadi. Bu rasmiy test emas — faqat reja uchun taxmin. To‘xtab, keyinroq davom ettirishingiz mumkin.','Шаг 2 из 2. Вопросы становятся сложнее или легче в зависимости от ответов. Это не официальный тест, а ориентир для плана. Можно прерваться и продолжить позже.','Step 2 of 2. Questions get harder or easier based on your answers. This is not an official test — just a guide for your plan. You can stop and resume later.')}</p>
+<div class="card"><div class="row sp sm mu"><span>${x('Savol','Вопрос','Question')} ${a.asked.length+(a.cur.fb?0:1)} / ${tot}</span><span class="tag">${TNm(QS[a.cur.id].t)}</span></div>${bar(a.asked.length/tot*100)}
+${qHTML(QS[a.cur.id],a.cur.order,a.cur.fb)}${a.cur.fb?`<button class="btn p" data-a="next">${a.asked.length>=tot?x('Natijalarni ko‘rish','Посмотреть итоги','See results'):x('Keyingi savol','Следующий вопрос','Next question')}</button>`:''}<p><button class="btn s" data-a="skip">${x('Baholashni o‘tkazib yuborish','Пропустить оценку','Skip assessment')}</button></p></div></section>`}
+function vSummary(u){return `<section class="wide"><h1>${x('Natijalaringiz','Ваши результаты','Your results')}</h1><p class="mu">${x('Bu taxminiy baho, ilmiy tasdiqlangan test emas. Mashqlar bilan u yangilanib boradi.','Это приблизительная оценка, а не проверенный тест. Она обновляется по мере занятий.','This is an estimate, not a validated test. It updates as you practise.')}</p>
+${TP(u).map(t=>{const m=M(u,t),lab=m>=65?x('Kuchli tomon','Сильная сторона','Strength'):m<45?x('Rivojlantirish kerak','Нужно подтянуть','Needs work'):x('Rivojlanmoqda','В развитии','Developing');
+ return `<div class="card"><div class="row sp"><b>${TNm(t)}</b><span class="tag">${lab} · ${m}%</span></div>${bar(m)}</div>`}).join('')}
+<button class="btn p full" data-a="finish">${x('Shaxsiy rejamni yaratish','Создать мой план','Build my learning plan')}</button></section>`}
+function vHome(u){const dn=Object.keys(u.done).length,avg=Math.round(TO.reduce((s,t)=>s+M(u,t),0)/TO.length),td=[];let sum=0;for(const id of u.plan){const l=LS[id];if(td.length&&sum+l.min>u.prof.minutes)break;td.push(l);sum+=l.min}
+ const rv=revision(u);return `<section><h1>${x('Salom','Здравствуйте','Hello')}, ${esc(u.name)}</h1><p class="mu">${x(`Bugungi maqsad: ${u.prof.minutes} daqiqa.`,`Цель на сегодня: ${u.prof.minutes} минут.`,`Today’s goal: ${u.prof.minutes} minutes.`)}</p>
+<div class="grid"><div class="card"><h2>${x('Umumiy progress','Общий прогресс','Overall progress')}</h2><p class="mu sm">${dn} / ${LES.length} ${x('dars tugatildi','уроков пройдено','lessons completed')}</p>${bar(dn/LES.length*100)}
+${TO.map(t=>`<p class="sm" style="margin:12px 0 4px">${TNm(t)} — ${M(u,t)}%</p>${bar(M(u,t))}`).join('')}</div>
+<div class="card"><h2>${x('Bugungi darslar','Уроки на сегодня','Today’s lessons')}</h2>${td.length?td.map(l=>`<div class="item"><div><b>${esc(l.ti[li()])}</b><br><span class="sm mu">${TNm(l.t)} · ${l.min} ${x('daq','мин','min')}</span></div><button class="btn s p" data-a="go" data-v="lesson" data-arg="${l.id}">${x('Boshlash','Начать','Start')}</button></div>`).join(''):`<p class="mu">${x('Hamma darslar tugadi yoki reja bo‘sh.','Все уроки пройдены или план пуст.','All lessons done or the plan is empty.')}</p><button class="btn" data-a="rebuild">${x('Rejani qayta tuzish','Пересобрать план','Rebuild plan')}</button>`}</div>
+<div class="card"><h2>${x('Takrorlash','Повторение','Revision')}</h2>${rv.length?rv.map(t=>{const l=LES.find(k=>k.t===t&&k.d===clamp(dFor(M(u,t)),1,3))||LES.find(k=>k.t===t);return `<div class="item"><span>${TNm(t)} <span class="tag">${x('xatolar','ошибки','mistakes')}: ${u.miss[t]||0}</span></span><button class="btn s" data-a="go" data-v="lesson" data-arg="${l.id}">${x('Takrorlash','Повторить','Revise')}</button></div>`}).join(''):`<p class="mu">${x('Hozircha takrorlash shart emas.','Пока повторять нечего.','Nothing to revise right now.')}</p>`}</div></div></section>`}
+function vPlan(u){const ds=days(u);return `<section><h1>${x('Mening o‘quv rejam','Мой план обучения','My learning plan')}</h1><p class="mu">${x('Har bir dars nima uchun tavsiya etilganini ko‘ring. Tartibni o‘zgartirish, olib tashlash yoki qo‘shish mumkin.','Смотрите, почему рекомендован каждый урок. Порядок можно менять, уроки — убирать и добавлять.','See why each lesson is recommended. You can reorder, remove, or add lessons.')}</p>
+<div class="row"><button class="btn" data-a="rebuild">${x('Rejani qayta tuzish','Пересобрать план','Rebuild plan')}</button>
+${(()=>{const av=LES.filter(l=>!u.done[l.id]&&!u.plan.includes(l.id));return av.length?`<select id="addl" style="width:auto"><option value="">${x('Dars qo‘shish…','Добавить урок…','Add a lesson…')}</option>${av.map(l=>`<option value="${l.id}">${esc(l.ti[li()])}</option>`).join('')}</select>`:''})()}</div>
+${ds.length?ds.slice(0,6).map((d,i)=>`<div class="card"><h2>${x('Kun','День','Day')} ${i+1} <span class="tag">${d.reduce((s,l)=>s+l.min,0)} ${x('daq','мин','min')}</span></h2>${d.map(l=>`<div class="item"><div><b>${esc(l.ti[li()])}</b> <span class="tag">${TNm(l.t)}</span><br><span class="sm mu">${esc(why(u,l))}</span></div>
+<div class="row" style="margin:0"><button class="btn s" data-a="mv" data-id="${l.id}" data-d="-1" aria-label="up">↑</button><button class="btn s" data-a="mv" data-id="${l.id}" data-d="1" aria-label="down">↓</button><button class="btn s" data-a="rm" data-id="${l.id}" aria-label="remove">✕</button><button class="btn s p" data-a="go" data-v="lesson" data-arg="${l.id}">${x('Ochish','Открыть','Open')}</button></div></div>`).join('')}</div>`).join(''):`<div class="card"><p class="mu">${x('Reja bo‘sh.','План пуст.','Your plan is empty.')}</p></div>`}
+<div class="card"><h2>${x('Oflayn kutubxona','Офлайн-библиотека','Offline library')}</h2><p class="mu sm">${x('Saqlangan darslar shu qurilmadagi IndexedDB’da turadi.','Сохранённые уроки лежат в IndexedDB на этом устройстве.','Saved lessons live in IndexedDB on this device.')}</p>
+${OFF.length?OFF.map(o=>`<div class="item"><span>${esc(LS[o.id].ti[li()])}</span><button class="btn s" data-a="go" data-v="lesson" data-arg="${o.id}">${x('Ochish','Открыть','Open')}</button></div>`).join(''):`<p class="mu">${x('Hozircha yo‘q. Dars sahifasida “Oflayn saqlash”ni bosing.','Пока пусто. Нажмите «Сохранить офлайн» на странице урока.','Empty. Press “Save offline” on a lesson page.')}</p>`}
+<p class="sm mu">${x('Kutilayotgan progress yozuvlari','Записей прогресса в очереди','Queued progress records')}: ${u.queue.filter(q=>!q.synced).length}</p><p class="sm mu">${x('Bu yagona fayl serverga ulanmagan: yozuvlar shu qurilmada qoladi.','Этот одиночный файл не подключён к серверу: записи остаются на этом устройстве.','This standalone file has no server: records stay on this device.')}</p></div></section>`}
+function vLesson(u){const l=LS[V.a];if(!l||(!unl(u,l)&&!u.plan.includes(l.id)))return vLessons(u);const pr=ui.pr,off=isOff(l.id);let body='';
+ if(pr&&pr.i<pr.ids.length){const q=QS[pr.ids[pr.i]];body=`<div class="card"><div class="row sp sm mu"><span>${x('Mashq','Практика','Practice')} ${pr.i+1} / ${pr.ids.length}</span></div>${bar(pr.i/pr.ids.length*100)}${qHTML(q,pr.order,pr.fb)}${pr.fb?`<button class="btn p" data-a="pnext">${x('Davom etish','Продолжить','Continue')}</button>`:''}</div>`}
+ else if(pr){const p=pr.ok/pr.ids.length;body=`<div class="card"><h2>${p>=.5?x('Dars tugatildi!','Урок пройден!','Lesson complete!'):x('Yana urinib ko‘ring','Попробуйте ещё раз','Try again')}</h2><p>${x('Natija','Результат','Score')}: ${pr.ok} / ${pr.ids.length} · ⚡ +${ui.gain||0} XP</p><p class="mu">${p>=.5?x('Reja yangilandi.','План обновлён.','Your plan was updated.'):x('Dars rejada qoldi, kerak bo‘lsa oldingi dars qo‘shildi.','Урок остался в плане; при необходимости добавлен предыдущий.','The lesson stays in your plan; an easier one was added if needed.')}</p><div class="row"><button class="btn p" data-a="go" data-v="plan">${x('Rejaga qaytish','Вернуться к плану','Back to plan')}</button><button class="btn" data-a="practice">${x('Qayta mashq','Повторить практику','Practise again')}</button></div></div>`}
+ else body=`<div class="row"><button class="btn p" data-a="practice">${x('Mashqni boshlash','Начать практику','Start practice')}</button></div>`;
+ return `<section class="wide"><p><a href="#" data-a="go" data-v="lessons" class="sm" style="color:var(--tl)">← ${x('Darslarim','Мои уроки','My lessons')}</a></p><h1>${esc(l.ti[li()])}</h1><p><span class="tag">${TNm(l.t)}</span><span class="tag">${l.min} ${x('daq','мин','min')}</span>${u.done[l.id]?`<span class="tag">✓ ${x('Tugatilgan','Пройден','Done')}</span>`:''}</p>
+<div class="card"><p style="font-size:1.1rem">${esc(l.b[li()])}</p><p class="sm mu">${esc(why(u,l))}</p><button class="btn s" data-a="off" data-id="${l.id}">${off?x('Oflayndan olib tashlash','Удалить из офлайна','Remove from offline'):x('Oflayn saqlash','Сохранить офлайн','Save offline')}</button> <span class="sm ok" role="status">${ui.offmsg||''}</span></div>${body}</section>`}
+function vMentor(u){const ch=u.chat||(u.chat=[{b:1,t:x('Men demo mentorman: qoidalarga asoslangan dastur, haqiqiy generativ AI emas. Reja, xatolar, kasblar va mavzular haqida so‘rang.','Я демо-ментор: программа на правилах, а не настоящий генеративный ИИ. Спрашивайте о плане, ошибках, профессиях и темах.','I’m a demo mentor: a rule-based program, not real generative AI. Ask about your plan, mistakes, careers, or topics.')}]);
+ return `<section class="wide"><h1>${x('Demo AI mentor','Демо ИИ-ментор','Demo AI mentor')}</h1><p class="banner">${x('Qoidalarga asoslangan demo — haqiqiy AI emas.','Демо на правилах — не настоящий ИИ.','Rule-based demo — not real AI.')}</p>
+<div class="chips" style="margin:0 0 4px">${Object.keys(MS).map(k=>`<button class="chip" data-a="mst" data-v="${k}" aria-pressed="${ME.m===k}">${MS[k][li()]}</button>`).join('')}</div>
+<div class="card"><div class="chat" id="chat" aria-live="polite">${ch.map(m=>`<div class="msg ${m.b?'b':'u'}">${esc(m.t)}</div>`).join('')}</div>
+<div class="chips">${[['reja','план','plan'],['keyingi dars','следующий урок','next lesson'],['zaif joylarim','слабые места','weak spots'],['karyera','карьера','careers']].map(a=>`<button class="chip" data-a="ask" data-q="${a[li()]}">${a[li()]}</button>`).join('')}</div>
+<form id="f-chat" class="row"><input id="q" style="flex:1" aria-label="${x('Xabar','Сообщение','Message')}" placeholder="${x('Savolingizni yozing…','Напишите вопрос…','Type a question…')}"><button class="btn p">${x('Yuborish','Отправить','Send')}</button></form></div></section>`}
+function vCareers(u){return `<section><h1>${x('Karyera yo‘nalishlari','Карьерные направления','Career paths')}</h1><p class="mu">${x('Moslik sizning hozirgi o‘zlashtirishingizga asoslangan. Kasbni maqsad qilsangiz, reja shu fanlarni ustuvor qiladi.','Совпадение рассчитано по вашему текущему освоению. Выбранная цель повышает приоритет нужных тем в плане.','The match is based on your current mastery. A chosen goal raises those topics in your plan.')}</p>
+<div class="grid">${Object.keys(CAR).sort((a,b)=>match(u,b)-match(u,a)).map(c=>{const on=u.prof.careers.includes(c);return `<div class="card"><div class="row sp"><h2>${CAR[c].n[li()]}</h2><span class="tag">${match(u,c)}%</span></div>${bar(match(u,c))}
+${Object.entries(CAR[c].req).map(([t,r])=>`<p class="sm mu" style="margin:8px 0 0">${TNm(t)}: ${M(u,t)}% / ${r}%</p>`).join('')}<button class="btn ${on?'':'p'} full" data-a="career" data-id="${c}" aria-pressed="${on}">${on?x('Maqsaddan olib tashlash','Убрать из целей','Remove goal'):x('Maqsad qilish','Сделать целью','Set as goal')}</button></div>`}).join('')}</div></section>`}
+function vPortfolio(u){const e=ui.e||{};return `<section class="wide"><h1>${x('Portfolio','Портфолио','Portfolio')}</h1><p class="mu">${x('Loyihalaringiz va yutuqlaringizni saqlang.','Сохраняйте свои проекты и достижения.','Keep track of your projects and achievements.')}</p>
+<form class="card" id="f-port" novalidate><h2>${x('Yangi yozuv','Новая запись','New entry')}</h2>${fld('pt',x('Sarlavha','Название','Title'),'text','',e.t)}
+<label for="pd">${x('Tavsif','Описание','Description')}</label><textarea id="pd" rows="3"></textarea>${fld('pl',x('Havola (ixtiyoriy)','Ссылка (необязательно)','Link (optional)'),'url','',e.l,'placeholder="https://"')}
+<label for="ptp">${x('Turi','Тип','Type')}</label>${sel('ptp',[['project',x('Loyiha','Проект','Project')],['cert',x('Sertifikat','Сертификат','Certificate')],['award',x('Mukofot','Награда','Award')]],'project')}<button class="btn p full">${x('Qo‘shish','Добавить','Add')}</button></form>
+<div class="card"><h2>${x('Yozuvlar','Записи','Entries')}</h2>${u.portfolio.length?u.portfolio.map(p=>`<div class="item"><div><b>${esc(p.t)}</b> <span class="tag">${esc(p.tp)}</span> <span class="sm mu">${new Intl.DateTimeFormat(['uz-UZ','ru-RU','en-GB'][li()],{dateStyle:'medium'}).format(p.at)}</span>${p.d?`<br>${esc(p.d)}`:''}${p.l?`<br><a href="${esc(p.l)}" target="_blank" rel="noopener noreferrer" style="color:var(--tl)">${esc(p.l)}</a>`:''}</div><button class="btn s d" data-a="pdel" data-id="${p.id}">${x('O‘chirish','Удалить','Delete')}</button></div>`).join(''):`<p class="mu">${x('Hozircha yozuv yo‘q.','Пока записей нет.','No entries yet.')}</p>`}</div>
+<div class="card"><h2>${x('Yutuqlar','Достижения','Achievements')}</h2>${Object.keys(u.done).length?Object.keys(u.done).map(id=>`<span class="tag">✓ ${esc(LS[id].ti[li()])}</span>`).join(''):`<p class="mu">${x('Dars tugatganingizda yutuqlar shu yerda paydo bo‘ladi.','Достижения появятся после завершения уроков.','Achievements appear when you complete lessons.')}</p>`}</div></section>`}
+
+const TM={alg:{ic:'∑',c:'#b7a4e8',bg:'linear-gradient(120deg,#2b2160,#1c1747)',d:['Raqamlar, tenglamalar va jumboqlar!','Числа, уравнения и головоломки!','Numbers, equations and puzzles!']},
+mech:{ic:'⚙',c:'#5ecfc4',bg:'linear-gradient(120deg,#12423f,#0e2f33)',d:['Harakat, kuch va energiya!','Движение, сила и энергия!','Motion, force and energy!']},
+code:{ic:'</>',c:'#7fb2ff',bg:'linear-gradient(120deg,#1a3568,#13244a)',d:['Algoritmlar, sikllar va mantiq!','Алгоритмы, циклы и логика!','Algorithms, loops and logic!']},chem:{ic:'⚗',c:'#ffb86b',bg:'linear-gradient(120deg,#5a3410,#3a2210)',d:['Moddalar, reaksiyalar va tajribalar!','Вещества, реакции и опыты!','Substances, reactions and experiments!']},bio:{ic:'🧬',c:'#8be28b',bg:'linear-gradient(120deg,#17501f,#10361a)',d:['Hayot sirlari: hujayradan odamgacha!','Тайны жизни: от клетки до человека!','Secrets of life: from cell to human!']},eng:{ic:'Aa',c:'#ff8fb1',bg:'linear-gradient(120deg,#6a1f45,#40142b)',d:['Grammatika va so‘z boyligi!','Грамматика и словарный запас!','Grammar and vocabulary!']}};
+const DIF=[['Oson','Легко','Easy'],['O‘rtacha','Средне','Medium'],['Qiyin','Сложно','Hard']];
+const unl=(u,l)=>{if(l.d===1)return true;const md=Math.max(0,...LES.filter(k=>k.t===l.t&&u.done[k.id]).map(k=>k.d));return l.d<=Math.max(dFor(M(u,l.t)),md+1)};
+function vLessons(u){const f=ui.flt||'all',cur=LES.find(l=>unl(u,l)&&!u.done[l.id]),W=100,pts=LES.map((l,i)=>[60+i*W,95+Math.sin(i*1.1)*38]);
+ let d='M'+pts[0].join(' ');for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i],m=(a[0]+b[0])/2;d+=`C${m} ${a[1]} ${m} ${b[1]} ${b[0]} ${b[1]}`}
+ const nodes=LES.map((l,i)=>{const [px,py]=pts[i],ok=!!u.done[l.id],un=unl(u,l),st=ok?'#5ecfc4':l===cur?'#b7a4e8':un?'#8aa0ff':'#4a4570',ic=ok?'✓':l===cur?'▶':un?'•':'🔒',tt=l.ti[li()];
+  return `${i%3===0?`<text x="${px}" y="${py-34}" fill="${TM[l.t].c}" font-size="13" font-weight="700" text-anchor="start">${TNm(l.t)}</text>`:''}
+  <g class="${un?'nd':''}" ${un?`data-a="go" data-v="lesson" data-arg="${l.id}" tabindex="0" role="button"`:''} aria-label="${esc(tt)}"><circle cx="${px}" cy="${py}" r="17" fill="${st}" stroke="#fff" stroke-width="2.5"/><text x="${px}" y="${py+5}" text-anchor="middle" font-size="14" fill="#14112e">${ic}</text>
+  <text x="${px}" y="${py+36}" text-anchor="middle" font-size="11" fill="#e8e6ff">${esc(tt.length>14?tt.slice(0,13)+'…':tt)}</text></g>`}).join('');
+ const secs=TO.filter(t=>f==='all'||f===t).map(t=>{const ls=LES.filter(l=>l.t===t),dn=ls.filter(l=>u.done[l.id]).length,pc=Math.round(dn/ls.length*100),m=TM[t];
+  return `<div class="sub" style="background:${m.bg}"><span class="ic" style="background:${m.c}">${m.ic}</span><div><b style="font-size:1.1rem">${TNm(t)}</b><br><span class="sm" style="opacity:.8">${m.d[li()]}</span></div>
+  <div class="pc"><div class="row sp" style="margin:0"><span>${dn}/${ls.length} ${x('dars','урок','lessons')}</span><b style="font-size:1.1rem">${pc}%</b></div><div class="track"><div class="fill" style="width:${pc}%;background:${m.c}"></div></div></div></div>
+  <div class="lg3">${ls.map(l=>{const un=unl(u,l),ok=!!u.done[l.id];return `<div class="lc ${un?'':'lk'}"><div class="row sp" style="margin:0"><span class="ic">${un?(ok?'✅':'📖'):'🔒'}</span><span class="tag" style="margin:0">${DIF[l.d-1][li()]}</span></div>
+  <b>${esc(l.ti[li()])}</b><div class="row sp" style="margin:0"><span class="sm">⏱ ${l.min} ${x('daq','мин','min')} · ⚡ +${XPV[l.d-1]} XP</span>${un?`<button class="btn s p" data-a="go" data-v="lesson" data-arg="${l.id}">${ok?x('Takrorlash','Повторить','Review'):x('Boshlash','Начать','Start')}</button>`:`<span title="${x('Oldingi darsni tugating','Завершите предыдущий урок','Finish the previous lesson')}">🔒</span>`}</div></div>`}).join('')}</div>`}).join('');
+ return `<section>${vTaskList(u)}<div class="map" style="margin-top:16px"><div class="mapw"><svg viewBox="0 0 ${120+W*(LES.length-1)} 200" role="group" aria-label="${x('Ko‘nikmalar xaritasi','Карта навыков','Skill map')}"><path d="${d}" fill="none" stroke="#7d72b8" stroke-width="4" stroke-linecap="round"/>${nodes}</svg></div>
+ <p class="sm" style="margin:10px 0 0;opacity:.85">✓ ${x('Tugatilgan','Пройдено','Done')} &nbsp; ▶ ${x('Joriy','Текущий','Current')} &nbsp; 🔒 ${x('Qulflangan','Закрыто','Locked')}</p></div>
+ <div class="chips">${[['all',x('Barcha fanlar','Все предметы','All subjects')],...TO.map(t=>[t,TNm(t)])].map(([v,l])=>`<button class="chip dk" data-a="flt" data-v="${v}" aria-pressed="${f===v}">${l}</button>`).join('')}</div>${secs}</section>`}
+
+const TKD=[['lesson',1,20,['1 ta dars tugating','Пройдите 1 урок','Finish 1 lesson'],'📖'],['right',5,15,['Mashqda 5 ta to‘g‘ri javob bering','Дайте 5 верных ответов в практике','Give 5 correct answers in practice'],'🎯'],['mentor',1,10,['Mentorga savol bering','Задайте вопрос ментору','Ask the mentor a question'],'🤖'],['port',1,15,['Portfolioga yozuv qo‘shing','Добавьте запись в портфолио','Add a portfolio entry'],'🏆']];
+function tk(u){const d=new Date().toDateString();if(!u.tk||u.tk.d!==d)u.tk={d,p:{},c:{}};return u.tk}
+function bump(id){const u=U();if(!u)return;const t=tk(u);t.p[id]=(t.p[id]||0)+1;save()}
+function vTaskList(u){const t=tk(u),dn=TKD.filter(k=>t.c[k[0]]).length;return `<div class="card" style="margin-top:0"><div class="row sp" style="margin:0"><h2 style="margin:0">${x('Bugungi vazifalar','Задания на сегодня','Today’s tasks')}</h2><span class="tag">${dn}/${TKD.length}</span></div>`+TKD.map(([id,g,xp,ti,ic])=>{const p=Math.min(g,t.p[id]||0),cl=t.c[id];return `<div class="item"><div style="flex:1"><b>${ic} ${ti[li()]}</b> <span class="tag">⚡ +${xp} XP</span><div style="margin:6px 0 2px">${bar(p/g*100)}</div><span class="sm mu">${p}/${g}</span></div>${cl?`<span class="ok">✓ ${x('Olindi','Получено','Claimed')}</span>`:p>=g?`<button class="btn s p" data-a="claim" data-id="${id}">${x('XP olish','Забрать XP','Claim XP')}</button>`:''}</div>`}).join('')+'</div>'}
+function vTasks(u){const nl=u.plan.slice(0,4).map(i=>LS[i]);return `<section>${vTaskList(u)}<div class="card"><h2>${x('Dars vazifalari','Задания по урокам','Lesson assignments')}</h2>${nl.length?nl.map(l=>`<div class="item"><div><b>${esc(l.ti[li()])}</b> <span class="tag">${TNm(l.t)}</span><br><span class="sm mu">${l.min} ${x('daq','мин','min')} · ⚡ +${XPV[l.d-1]} XP</span></div><button class="btn s p" data-a="go" data-v="lesson" data-arg="${l.id}">${x('Boshlash','Начать','Start')}</button></div>`).join(''):`<p class="mu">${x('Hamma vazifalar bajarildi!','Все задания выполнены!','All assignments done!')}</p><button class="btn" data-a="rebuild">${x('Rejani qayta tuzish','Пересобрать план','Rebuild plan')}</button>`}</div></section>`}
+
+let ME={},ENT=1,menu=0,tmr,hid;try{ME=JSON.parse(localStorage.getItem('eduverse.me'))||{}}catch(e){}
+const saveMe=()=>{try{localStorage.setItem('eduverse.me',JSON.stringify(ME))}catch(e){}};
+function ensureUser(){if(!DB.sess||!DB.users[DB.sess]){DB.users.me=newUser(ME.name||x('Talaba','Студент','Student'),'','');DB.sess='me'}}
+const QZ=[
+{id:'subj',m:1,q:['Qaysi fanlar sizni ko‘proq qiziqtiradi?','Какие предметы вам интереснее?','Which subjects interest you most?'],o:Object.fromEntries(TO.map(t=>[t,TN[t]]))},
+{id:'act',m:1,q:['Nima qilish sizga yoqadi?','Чем вам нравится заниматься?','What do you enjoy doing?'],o:{logic:['Mantiqiy masalalar va jumboqlar yechish','Решать логические задачи и головоломки','Solving logic puzzles'],how:['Narsalar qanday ishlashini o‘rganish','Изучать, как всё устроено','Learning how things work'],build:['Biror narsa yasash va tajriba qilish','Создавать вещи и экспериментировать','Building and experimenting'],data:['Raqamlar va ma’lumotlar bilan ishlash','Работать с числами и данными','Working with numbers and data'],lang:['Tillar o‘rganish','Изучать языки','Learning languages'],game:['Dastur, sayt yoki o‘yin yaratish','Создавать программы, сайты и игры','Creating programs, sites or games']}},
+{id:'car',m:1,q:['Kelajakda qaysi kasbni egallamoqchisiz?','Кем вы хотите стать в будущем?','What career do you want in the future?'],o:{...Object.fromEntries(Object.keys(CAR).map(c=>[c,CAR[c].n])),none:['Hali bilmayman','Пока не знаю','Not sure yet']}},
+{id:'goals',m:1,q:['Asosiy maqsadingiz nima?','Какова ваша главная цель?','What is your main goal?'],o:GOALS},
+{id:'min',m:0,q:['Kuniga qancha vaqt ajrata olasiz?','Сколько времени в день вы можете уделять?','How much time can you study per day?'],o:{15:['15 daqiqa','15 минут','15 minutes'],30:['30 daqiqa','30 минут','30 minutes'],60:['1 soat','1 час','1 hour']}},
+{id:'style',m:0,q:['Qanday tushuntirilsa yaxshi o‘zlashtirasiz?','Как вам удобнее изучать материал?','How do you learn best?'],o:STYLES}];
+const ACT={logic:['alg'],how:['mech','bio','chem'],lang:['eng'],build:['mech','code','chem'],data:['alg','code'],game:['code']};
+function vQuiz(u){const qa=u.qa||(u.qa={}),i=ui.qi||0,q=QZ[i],cur=qa[q.id]||[];
+ return `<section class="wide"><h1>${x('Sizni tanib olaylik','Давайте познакомимся','Let’s get to know you')}</h1><p class="mu">${x('Qisqa test: qiziqishlaringiz va kelajakdagi kasbingiz bo‘yicha. Javoblar sizga mos reja tuzishga yordam beradi.','Короткий тест об интересах и будущей профессии. Ответы помогут составить ваш план.','A short test about your interests and future career. Your answers shape your plan.')}</p>
+<div class="card"><div class="row sp sm mu"><span>${x('Savol','Вопрос','Question')} ${i+1} / ${QZ.length}</span>${q.m?`<span>${x('Bir nechtasini tanlash mumkin','Можно выбрать несколько','Choose any that apply')}</span>`:''}</div>${bar(i/QZ.length*100)}
+<p style="font-weight:600;font-size:1.1rem">${q.q[li()]}</p><div class="opts">${Object.keys(q.o).map(k=>`<button type="button" class="opt ${cur.includes(k)?'sel':''}" aria-pressed="${cur.includes(k)}" data-a="qopt" data-v="${k}">${cur.includes(k)?'✓ ':''}${esc(q.o[k][li()])}</button>`).join('')}</div>
+${ui.qe?`<p class="err" role="alert">${ui.qe}</p>`:''}<div class="row">${i>0?`<button class="btn" data-a="qback">${x('Orqaga','Назад','Back')}</button>`:''}<button class="btn p" data-a="qnext">${i===QZ.length-1?x('Natijani ko‘rish','Посмотреть результат','See results'):x('Keyingi','Далее','Next')}</button></div></div></section>`}
+function qfinish(u){const qa=u.qa,sb=new Set(qa.subj||[]);(qa.act||[]).forEach(a=>ACT[a].forEach(t=>sb.add(t)));
+ const ch=(qa.car||[]).filter(c=>c!=='none');ch.forEach(c=>Object.keys(CAR[c].req).forEach(t=>sb.add(t)));
+ Object.assign(u.prof,{subjects:[...sb],careers:ch,goals:qa.goals||[],minutes:+(qa.min||[30])[0],style:(qa.style||['examples'])[0]});
+ buildPlan(u);u.stage='result';ui={};save()}
+function vResult(u){const sb=TP(u),ch=u.prof.careers,im=c=>{const r=Object.keys(CAR[c].req);return Math.round(r.filter(t=>sb.includes(t)).length/r.length*70+(ch.includes(c)?30:0))},top=Object.keys(CAR).sort((a,b)=>im(b)-im(a)).slice(0,3);
+ return `<section class="wide"><h1>${x('Test natijasi','Результат теста','Your results')}</h1><p class="mu">${x('Qiziqishlaringiz va kasb maqsadingizga ko‘ra shaxsiy reja tayyorlandi.','По вашим интересам и целям составлен личный план.','A personal plan was built from your interests and goals.')}</p>
+<div class="card"><h2>${x('Sizga mos kasblar','Подходящие профессии','Careers that fit you')}</h2>${top.map(c=>`<div class="item" style="display:block"><div class="row sp" style="margin:0"><b>${CAR[c].n[li()]}</b><span class="tag">${im(c)}%${ch.includes(c)?' · ★':''}</span></div><div style="margin-top:6px">${bar(im(c))}</div></div>`).join('')}</div>
+<div class="card"><h2>${x('Tavsiya etilgan fanlar','Рекомендуемые предметы','Recommended subjects')}</h2>${sb.map(t=>`<span class="tag">${TNm(t)}</span>`).join('')}</div>
+<button class="btn p full" data-a="start">${x('Darslarni boshlash','Начать обучение','Start learning')}</button></section>`}
+const NAV=[['home',['Bosh sahifa','Главная','Home'],'🏠'],['lessons',['Darslarim','Мои уроки','My lessons'],'📚'],['tasks',['Vazifalar','Задания','Tasks'],'✅'],['plan',['Reja','План','Plan'],'🗓'],['mentor',['Mentor','Ментор','Mentor'],'🤖'],['careers',['Karyera','Карьера','Careers'],'🧭'],['portfolio',['Portfolio','Портфолио','Portfolio'],'🏆'],['profile',['Profil','Профиль','Profile'],'👤']];
+function render(){const u=U();document.documentElement.lang=DB.lang;const dark=DB.theme==='dark'||(DB.theme==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=dark?'dark':'light';
+ $('#lang').value=DB.lang;$('#theme').innerHTML=[['light',x('Yorug‘','Светлая','Light')],['dark',x('Qorong‘i','Тёмная','Dark')],['system',x('Tizim','Системная','System')]].map(([v,l])=>`<option value="${v}" ${DB.theme===v?'selected':''}>${l}</option>`).join('');
+ $('#out').hidden=true;$('#out').textContent=x('Chiqish','Выйти','Log out');$('#net').textContent=navigator.onLine?'● online':'○ offline';
+ let n=V.n,h;if(!u){if(n!=='register')n='login';$('#nav').innerHTML=[['login',['Kirish','Войти','Log in']],['register',['Ro‘yxatdan o‘tish','Регистрация','Sign up']]].map(([v,l])=>`<button data-a="go" data-v="${v}" ${n===v?'aria-current="page"':''}>${l[li()]}</button>`).join('');h=vAuth(n==='register')}
+ else if(u.stage!=='done'){$('#nav').innerHTML='';h=u.stage==='quiz'?vQuiz(u):u.stage==='result'?vResult(u):u.stage==='assess'?vAssess(u):vSummary(u)}
+ else{if(!NAV.some(a=>a[0]===n)&&n!=='lesson')n='home';$('#nav').innerHTML=NAV.map(([v,l,ic])=>`<button data-a="go" data-v="${v}" ${n===v||(n==='lesson'&&v==='lessons')?'aria-current="page"':''}><span>${ic}</span><span>${l[li()]}</span></button>`).join('');
+  h={home:vHome,lessons:vLessons,tasks:vTasks,plan:vPlan,lesson:vLesson,mentor:vMentor,careers:vCareers,portfolio:vPortfolio,profile:u=>vPrefs(u,false)}[n](u)}
+ $('#app').innerHTML=`<p class="banner">${x('Demo: ma’lumotlar faqat shu brauzerda saqlanadi.','Демо: данные хранятся только в этом браузере.','Demo: data is stored only in this browser.')}</p>`+h;
+ const ok=!!u&&u.stage==='done';if(ENT){const a=$('#app');a.classList.remove('enter');void a.offsetWidth;a.classList.add('enter');ENT=0}if(ok&&(!DB.view||DB.view.n!==n||DB.view.a!==V.a)){DB.view={n,a:V.a};save()}document.body.classList.toggle('noside',!ok);$('#tag').textContent=x('Sizga moslashadigan ta’lim','Адаптивное обучение','Adaptive learning');
+ $('#ptitle').textContent=ok?(NAV.find(a=>a[0]===(n==='lesson'?'lessons':n))||NAV[0])[1][li()]:'EDUVERSE';$('#xp').hidden=$('#st').hidden=!ok;
+ if(ok){const xp=u.xp||0,lv=Math.floor(xp/500)+1,cx=xp%500;$('#xp').textContent='⚡ '+xp+' XP';$('#st').textContent='🔥 '+(u.streak||0)+' '+x('kun','дн.','days');
+  $('#ucard').innerHTML=`<div class="row" style="margin:0"><span class="av">${esc((u.name||'?')[0]).toUpperCase()}</span><div><b>${esc(u.name)}</b><br><span class="sm">⭐ ${x('Daraja','Уровень','Level')} ${lv}</span></div></div><p class="sm" style="margin:10px 0 4px">XP ${cx} / 500</p>${bar(cx/5)}`}else $('#ucard').innerHTML='';
+ const c=$('#chat');if(c)c.scrollTop=c.scrollHeight}
+// ---------- actions ----------
+const A={
+ mst(el){setM(el.dataset.v)},
+ qopt(el){const u=U(),q=QZ[ui.qi||0],v=el.dataset.v,qa=u.qa||(u.qa={});let a=qa[q.id]||[];
+  if(!q.m)a=[v];else{const i=a.indexOf(v);if(i>=0)a.splice(i,1);else{if(q.id==='car'){a=v==='none'?[]:a.filter(k=>k!=='none')}a.push(v)}}
+  qa[q.id]=a;ui.qe=null;save();render()},
+ qnext(){const u=U(),i=ui.qi||0,q=QZ[i];if(!(u.qa&&u.qa[q.id]&&u.qa[q.id].length)){ui.qe=x('Iltimos, kamida bitta javob tanlang.','Выберите хотя бы один вариант.','Please choose at least one answer.');return render()}
+  if(i===QZ.length-1){qfinish(u);return render()}ui.qi=i+1;ui.qe=null;render();window.scrollTo(0,0)},
+ qback(){ui.qi=Math.max(0,(ui.qi||0)-1);ui.qe=null;render()},
+ start(){const u=U();u.stage='done';V={n:'lessons',a:null};ui={};save();render()},
+ requiz(){const u=U();u.stage='quiz';u.qa={};ui={qi:0};save();render()},
+ claim(el){const u=U(),t=tk(u),k=TKD.find(a=>a[0]===el.dataset.id);if(k&&!t.c[k[0]]&&(t.p[k[0]]||0)>=k[1]){t.c[k[0]]=1;u.xp=(u.xp||0)+k[2];save();render()}},
+ skip(){const u=U();buildPlan(u);u.stage='done';V={n:'lessons',a:null};ui={};save();render()},
+ flt(el){ui.flt=el.dataset.v;render()},
+ go(el){go(el.dataset.v,el.dataset.arg||null);if(DB.sess&&['plan','lesson'].includes(V.n))loadOff().then(()=>['plan','lesson'].includes(V.n)&&render())},
+ chip(el){const u=U(),a=u.prof[el.dataset.g],v=el.dataset.v,i=a.indexOf(v);i<0?a.push(v):a.splice(i,1);el.setAttribute('aria-pressed',i<0);save()},
+ ans(el){const u=U(),i=+el.dataset.i,pr=ui.pr;
+  if(V.n==='lesson'&&pr){if(pr.fb)return;const q=QS[pr.ids[pr.i]];pr.fb={pick:i};if(pr.order[i]===0){pr.ok++;bump('right');say('right')}else{u.miss[q.t]=(u.miss[q.t]||0)+1;save();say('wrong')}render()}
+  else if(u.stage==='assess'){const a=u.assess;if(a.cur.fb)return;const q=QS[a.cur.id],ok=a.cur.order[i]===0;a.cur.fb={pick:i};grade(u,q,ok,[10,15]);say(ok?'right':'wrong');a.asked.push({id:q.id,ok});save();render()}},
+ next(){const u=U();u.assess.cur=null;if(!nextQ(u))u.stage='summary';save();render()},
+ finish(){const u=U();buildPlan(u);u.stage='done';V={n:'lessons',a:null};save();render()},
+ retake(){const u=U();TP(u).forEach(t=>delete u.m[t]);u.assess={asked:[],cur:null};u.stage='assess';save();render()},
+ practice(){const l=LS[V.a];ui.pr={ids:['b','a'].map(s=>l.t+l.d+s),i:0,ok:0,fb:null,order:shuf()};render()},
+ pnext(){const u=U(),l=LS[V.a],pr=ui.pr;pr.i++;pr.fb=null;pr.order=shuf();if(pr.i>=pr.ids.length){finishPractice(u,l,pr.ok,pr.ids.length);const p=pr.ok>=pr.ids.length/2;say(p?'pass':'fail');p&&confetti()}render()},
+ async off(el){const k=DB.sess+'|'+el.dataset.id;try{isOff(el.dataset.id)?await idbDo('readwrite',s=>s.delete(k)):await idbDo('readwrite',s=>s.put({k,id:el.dataset.id,at:Date.now()}));await loadOff();ui.offmsg=isOff(el.dataset.id)?x('Saqlandi','Сохранено','Saved'):x('Olib tashlandi','Удалено','Removed')}catch(e){ui.offmsg=x('Brauzer oflayn saqlashni bloklagan.','Браузер блокирует офлайн-хранилище.','Your browser blocked offline storage.')}render()},
+ mv(el){const u=U(),i=u.plan.indexOf(el.dataset.id),j=i+ +el.dataset.d;if(i<0||j<0||j>=u.plan.length)return;[u.plan[i],u.plan[j]]=[u.plan[j],u.plan[i]];save();render()},
+ rm(el){const u=U();u.plan=u.plan.filter(i=>i!==el.dataset.id);save();render()},
+ rebuild(){buildPlan(U());save();render()},
+ career(el){const u=U(),a=u.prof.careers,i=a.indexOf(el.dataset.id);i<0?a.push(el.dataset.id):a.splice(i,1);buildPlan(u);save();render()},
+ ask(el){chat(el.dataset.q)},
+ pdel(el){const u=U();u.portfolio=u.portfolio.filter(p=>p.id!==el.dataset.id);save();render()},
+ async del(){try{for(const o of OFF)await idbDo('readwrite',s=>s.delete(o.k))}catch(e){}delete DB.users[DB.sess];DB.sess=null;OFF=[];ensureUser();V={n:'lessons',a:null};ui={};save();render()}};
+function chat(q){q=q.trim();if(!q)return;const u=U();bump('mentor');const r=PRE()+mentor(u,q);(u.chat=u.chat||[]).push({t:q},{b:1,t:r});u.chat=u.chat.slice(-40);save();render();type(r.split('\n')[0].slice(0,150));const i=$('#q');if(i)i.focus()}
+document.addEventListener('click',e=>{const el=e.target.closest('[data-a]');if(!el)return;if(el.tagName==='A')e.preventDefault();const f=A[el.dataset.a];if(f)f(el)});
+document.addEventListener('input',e=>{if(e.target.id==='dc'){const b=$('#del');if(b)b.disabled=e.target.value!=='DELETE'}});
+document.addEventListener('change',e=>{const u=U();if(e.target.id==='addl'&&e.target.value&&u){u.plan.push(e.target.value);save();render()}});
+document.addEventListener('submit',async e=>{e.preventDefault();const id=e.target.id,v=i=>($('#'+i)||{}).value||'';
+ if(id==='f-wel'){const nm=v('wn').trim();if(nm.length<2)return $('#wn').focus();ME.name=nm;if(!ME.m)ME.m='friend';saveMe();if(DB.sess==='me')U().name=nm;save();$('#wel').hidden=true;render();return say('hi')}
+ if(id==='f-auth'){const reg=V.n==='register',f={name:v('name').trim(),email:v('email').trim().toLowerCase()},pw=v('pw'),er={};ui.f=f;
+  if(reg&&f.name.length<2)er.name=x('Ismingizni kiriting (kamida 2 ta belgi).','Введите имя (не менее 2 символов).','Enter your name (at least 2 characters).');
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email))er.email=x('To‘g‘ri elektron pochta kiriting.','Введите корректную почту.','Enter a valid email address.');
+  if(reg&&pw.length<8)er.pw=x('Kamida 8 ta belgi ishlating.','Используйте не менее 8 символов.','Use at least 8 characters.');
+  if(!reg&&!pw)er.top=x('Pochta yoki parol noto‘g‘ri.','Неверная почта или пароль.','Email or password is incorrect.');
+  if(!Object.keys(er).length){if(reg){if(DB.users[f.email])er.email=x('Bu pochta bilan hisob mavjud. Kirishga urinib ko‘ring.','Аккаунт с этой почтой уже есть. Попробуйте войти.','An account with this email exists. Try logging in.');
+   else{const salt=Math.random().toString(36).slice(2)+Date.now().toString(36);DB.users[f.email]=newUser(f.name,salt,await hashPw(pw,salt));ME.name=f.name;saveMe();DB.sess=f.email;V={n:'lessons',a:null};ui={};save();return render()}}
+   else{const u=DB.users[f.email];if(!u||u.hash!==await hashPw(pw,u.salt))er.top=x('Pochta yoki parol noto‘g‘ri.','Неверная почта или пароль.','Email or password is incorrect.');
+    else{DB.sess=f.email;DB.lang=u.lang;DB.theme=u.theme;V={n:'lessons',a:null};ui={};save();return render()}}}
+  ui.e=er;return render()}
+ if(id==='f-prefs'){const u=U(),er={},nm=v('pname').trim(),mn=Number(v('minutes'));
+  if(nm.length<2)er.name=x('Ismingizni kiriting (kamida 2 ta belgi).','Введите имя (не менее 2 символов).','Enter your name (at least 2 characters).');
+  if(!(mn>=10&&mn<=240))er.minutes=x('10 dan 240 gacha kiriting.','Введите число от 10 до 240.','Enter a number from 10 to 240.');
+  if(Object.keys(er).length){ui.e=er;return render()}
+  Object.assign(u,{name:nm});ME.name=nm;saveMe();Object.assign(u.prof,{level:v('level'),minutes:mn,style:v('style'),chal:v('chal')});
+  if(u.stage==='prefs'){TP(u).forEach(t=>delete u.m[t]);u.assess={asked:[],cur:null};u.stage='assess';save();return render()}
+  if(u.ps!==TP(u).join()||!u.plan.length)buildPlan(u);ui.e={};ui.saved=1;save();return render()}
+ if(id==='f-chat'){const i=$('#q'),q=i.value;i.value='';return chat(q)}
+ if(id==='f-port'){const u=U(),er={},t=v('pt').trim(),l=v('pl').trim();if(t.length<2)er.t=x('Sarlavha kiriting.','Введите название.','Enter a title.');
+  if(l&&!/^https?:\/\//i.test(l))er.l=x('Havola http:// yoki https:// bilan boshlansin.','Ссылка должна начинаться с http:// или https://.','The link must start with http:// or https://.');
+  if(Object.keys(er).length){ui.e=er;return render()}
+  bump('port');u.portfolio.unshift({id:Date.now()+'',t,d:v('pd').trim(),l,tp:v('ptp'),at:Date.now()});ui.e={};save();render()}});
+$('#lang').onchange=e=>{DB.lang=e.target.value;if(U())U().lang=DB.lang;save();render()};
+$('#theme').onchange=e=>{DB.theme=e.target.value;if(U())U().theme=DB.theme;save();render()};
+$('#out').onclick=()=>{DB.sess=null;V={n:'login',a:null};ui={};save();render()};
+addEventListener('online',render);addEventListener('offline',render);
+matchMedia('(prefers-color-scheme: dark)').addEventListener&&matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>DB.theme==='system'&&render());
+
+const MS={soft:['🌸 Muloyim','🌸 Мягкий','🌸 Gentle'],friend:['😊 Do‘stona','😊 Дружелюбный','😊 Friendly'],strict:['🔥 Qattiqqo‘l','🔥 Строгий','🔥 Strict']};
+const MD={soft:['Sabr bilan, yumshoq qo‘llab-quvvatlaydi','Терпеливо и мягко поддерживает','Patient and gently supportive'],friend:['Quvnoq va ilhomlantiradi','Весело и вдохновляет','Cheerful and motivating'],strict:['Talabchan: intizom va natija','Требовательный: дисциплина и результат','Demanding: discipline and results']};
+const PH={
+hi:{soft:"Salom, {n}! Men sizning mentoringizman. Shoshilmang, har qadamni birga bosamiz 🌸|Привет, {n}! Я ваш ментор. Не спешите, пойдём шаг за шагом 🌸|Hi {n}! I’m your mentor. No rush, we’ll go step by step 🌸",friend:"Salom, {n}! Bugun birga zo‘r ish qilamiz. Tayyormisiz? 🚀|Привет, {n}! Сегодня сделаем крутую работу вместе. Готовы? 🚀|Hey {n}! Let’s do something great today. Ready? 🚀",strict:"{n}, vaqt qimmat. Reja tayyor, bahona yo‘q. Boshladik! 🔥|{n}, время дорого. План готов, без отговорок. Начали! 🔥|{n}, time is precious. The plan is ready, no excuses. Let’s go! 🔥"},
+right:{soft:"Barakalla! Juda yaxshi ketyapsiz 💜|Молодец! У вас отлично получается 💜|Well done! You’re doing lovely 💜",friend:"Zo‘r! Mana bu boshqa gap! 🎉|Супер! Вот это дело! 🎉|Awesome! Now we’re talking! 🎉",strict:"To‘g‘ri. Shu sur’atni ushlang, to‘xtamang.|Верно. Держите темп, не останавливайтесь.|Correct. Keep that pace, don’t stop."},
+wrong:{soft:"Hechqisi yo‘q, xato o‘rganishning bir qismi. Izohni o‘qib ko‘ring 🌼|Ничего страшного, ошибки — часть обучения. Прочитайте пояснение 🌼|It’s okay, mistakes are part of learning. Read the note 🌼",friend:"Oz qoldi! Izohni o‘qing, keyingisini bosib ketamiz 💪|Чуть-чуть не хватило! Читайте пояснение и дальше 💪|So close! Read the note and we’ll nail the next one 💪",strict:"Xato. Diqqat qiling! Izohni yaxshilab o‘qing va takrorlamang.|Ошибка. Внимательнее! Прочитайте пояснение и не повторяйте.|Wrong. Focus! Read the explanation and don’t repeat it."},
+pass:{soft:"Dars tugadi! Siz bilan faxrlanaman 🌟|Урок пройден! Горжусь вами 🌟|Lesson complete! I’m proud of you 🌟",friend:"Dars yutildi! XP sizniki, keyingisiga o‘tamizmi? ⚡|Урок взят! XP ваши, идём дальше? ⚡|Lesson crushed! XP is yours. Next one? ⚡",strict:"Yaxshi, lekin bu hali boshlanishi. Keyingi dars kutyapti.|Неплохо, но это лишь начало. Следующий урок ждёт.|Good, but it’s only the start. Next lesson awaits."},
+fail:{soft:"Bu safar bo‘lmadi, lekin siz qila olasiz. Yana urinamizmi? 🌷|В этот раз не вышло, но вы сможете. Попробуем ещё? 🌷|Not this time, but you can do it. Try again? 🌷",friend:"Hmm, bu safar emas. Qayta urinamiz, men sizga ishonaman! 💥|Хм, не в этот раз. Пробуем снова, я в вас верю! 💥|Hmm, not this time. Again, I believe in you! 💥",strict:"Natija yetarli emas. Materialni qayta o‘qing va yana urining.|Результата мало. Перечитайте материал и попробуйте снова.|Not good enough. Re-read the material and try again."},
+nudge:{soft:"Charchamadingizmi? Xohlasangiz, bitta qisqa dars qilamiz ☕|Не устали? Если хотите — один короткий урок ☕|Tired? We can do one short lesson if you like ☕",friend:"Hoy, 5 daqiqa ham yetadi. Bitta mashq qilamizmi? 😄|Эй, хватит и 5 минут. Сделаем упражнение? 😄|Hey, even 5 minutes counts. One quick exercise? 😄",strict:"Nega to‘xtadingiz? Reja kutyapti. Davom eting!|Почему остановились? План ждёт. Продолжайте!|Why did you stop? The plan is waiting. Keep going!"}};
+const PRE=()=>({soft:x('Albatta, mamnuniyat bilan! ','С радостью! ','Gladly! '),friend:x('Mana, qarang! ','Смотрите! ','Here you go! '),strict:x('Diqqat bilan o‘qing: ','Читайте внимательно: ','Read carefully: ')})[ME.m||'friend'];
+let VX=[];const loadV=()=>{try{VX=speechSynthesis.getVoices()}catch(e){}};
+if(window.speechSynthesis){loadV();speechSynthesis.onvoiceschanged=loadV}
+const vsc=v=>(/natural|neural|online|google|enhanced|premium/i.test(v.name)?4:0)+(v.localService?0:1)+(/madina|svetlana|dariya|aria|jenny|samantha|milena|female/i.test(v.name)?1:0);
+function pickV(){const g=['uz','ru','en'][li()],alt=g==='uz'?['uz','tr']:[g];
+ for(const p of alt){const c=VX.filter(v=>v.lang.toLowerCase().replace('_','-').startsWith(p)).sort((x1,y)=>vsc(y)-vsc(x1));if(c.length)return c[0]}return null}
+let UNL=0,PEND=null;
+['pointerdown','touchend','keydown','click'].forEach(k=>addEventListener(k,()=>{if(UNL||!window.speechSynthesis)return;UNL=1;try{speechSynthesis.speak(new SpeechSynthesisUtterance(''))}catch(e){}if(PEND){const q=PEND;PEND=null;speak(q)}},true));
+function speak(s){if(ME.v===false||!window.speechSynthesis)return;if(!UNL){PEND=s;return}
+ const v=pickV();let t=s.replace(/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/gu,'').replace(/\s+/g,' ').trim();
+ if(v&&v.lang.toLowerCase().startsWith('tr'))t=t.replace(/[‘’ʻ`]/g,'');
+ const parts=(t.match(/[^.!?]+[.!?]*/g)||[t]).map(z=>z.trim()).filter(Boolean);
+ const go=()=>parts.forEach(z=>{const u=new SpeechSynthesisUtterance(z);if(v){u.voice=v;u.lang=v.lang}else u.lang=['uz-UZ','ru-RU','en-US'][li()];
+  u.rate=ME.m==='strict'?1:.93;u.pitch=ME.m==='soft'?1.1:ME.m==='strict'?.95:1;speechSynthesis.speak(u)});
+ try{speechSynthesis.resume();if(speechSynthesis.speaking||speechSynthesis.pending){speechSynthesis.cancel();setTimeout(go,80)}else go()}catch(e){}}
+function type(s){const b=$('#bub'),t=$('#bt'),r=$('#rbt'),ch=[...s];clearInterval(tmr);b.hidden=false;t.textContent='';let i=0;r.classList.add('talk');
+ tmr=setInterval(()=>{t.textContent=ch.slice(0,++i).join('');if(i>=ch.length){clearInterval(tmr);r.classList.remove('talk');clearTimeout(hid);hid=setTimeout(()=>{if(!menu)b.hidden=true},9000)}},26);speak(s)}
+function say(ev){type(PH[ev][ME.m||'friend'].split('|')[li()].replace('{n}',ME.name||x('do‘st','друг','friend')))}
+function upMenu(){$('#bm').innerHTML=Object.keys(MS).map(k=>`<button class="chip" data-a="mst" data-v="${k}" aria-pressed="${ME.m===k}">${MS[k][li()]}</button>`).join('');$('#vo').textContent=ME.v===false?'🔇':'🔊';$('#vo').hidden=!window.speechSynthesis}
+function setM(m){ME.m=m;saveMe();$('#rbt').dataset.m=m;upMenu();if(!$('#wel').hidden)showWel();else render();say('hi')}
+function showWel(){const w=$('#wel'),nv=($('#wn')||{}).value||'';if(!ME.m)ME.m='friend';w.hidden=false;
+ w.innerHTML=`<form class="card" id="f-wel"><div style="font-size:2.4rem;display:inline-block;animation:flt 2s infinite">🤖</div><h1>${x('Xush kelibsiz!','Добро пожаловать!','Welcome!')}</h1><p class="mu">${x('Men sizning shaxsiy mentoringizman. Ismingiz nima?','Я ваш личный ментор. Как вас зовут?','I’m your personal mentor. What’s your name?')}</p>
+ <input id="wn" maxlength="30" value="${esc(nv)}" placeholder="${x('Ismingiz','Ваше имя','Your name')}" autocomplete="given-name">
+ <p class="sm" style="font-weight:600;margin:14px 0 6px">${x('Mentor uslubini tanlang','Выберите стиль ментора','Pick your mentor style')}</p><div class="opts">${Object.keys(MS).map(k=>`<button type="button" class="opt ${ME.m===k?'sel':''}" data-a="mst" data-v="${k}"><b>${MS[k][li()]}</b><br><span class="sm mu">${MD[k][li()]}</span></button>`).join('')}</div>
+ <button class="btn p full">${x('Boshlaymiz','Начнём','Let’s go')}</button></form>`;if(!nv)$('#wn').focus()}
+function confetti(){for(let i=0;i<30;i++){const d=document.createElement('i');d.className='cf';d.style.cssText=`left:${Math.random()*100}vw;background:hsl(${Math.random()*360} 80% 60%);animation-delay:${Math.random()*.4}s;--r:${Math.random()*720-360}deg`;document.body.appendChild(d);setTimeout(()=>d.remove(),2400)}}
+$('#rbody').onclick=()=>{menu=!menu;$('#bm').hidden=!menu;$('#bub').hidden=false;upMenu();if(menu&&!$('#bt').textContent)say('hi')};
+$('#vo').onclick=()=>{ME.v=ME.v===false;saveMe();upMenu();if(ME.v===false){window.speechSynthesis&&speechSynthesis.cancel()}else say('hi')};
+addEventListener('pointermove',e=>{const r=$('#rbody').getBoundingClientRect(),f=(v,c)=>Math.max(-3,Math.min(3,(v-c)/90));$('#eyes').style.transform=`translate(${f(e.clientX,r.left+r.width/2)}px,${f(e.clientY,r.top+r.height/2)}px)`});
+setInterval(()=>{if($('#bub').hidden&&$('#wel').hidden&&ME.name)say('nudge')},45000);
+ensureUser();if(ME.name&&DB.sess==='me')DB.users.me.name=ME.name;if(DB.view&&DB.view.n)V=DB.view;
+$('#rbt').dataset.m=ME.m||'friend';upMenu();loadOff().then(render);render();
+setTimeout(()=>ME.name?say('hi'):showWel(),700);
+
+</script>
+</body>
+</html>
